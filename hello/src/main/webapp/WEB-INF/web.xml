@@ -7,4 +7,16 @@
          version="4.0"
          metadata-complete="true">
 
+    <!--web.xml中是配置web的核心应用-->
+    <!--注册servlet-->
+    <servlet>
+        <servlet-name>helloservlet</servlet-name>
+        <servlet-class>com.kuang.servlet.HelloServlet</servlet-class>
+    </servlet>
+    <!--一个Servlet对应一个mapping：映射-->
+    <servlet-mapping>
+        <servlet-name>helloservlet</servlet-name>
+        <!--请求路径-->
+        <url-pattern>/kuangshen</url-pattern>
+    </servlet-mapping>
 </web-app>
