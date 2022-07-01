@@ -5,6 +5,8 @@
                       http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd"
          version="4.0"
          metadata-complete="true">
+
+
     <!-- 注册servlet-->
     <servlet>
         <servlet-name>hello</servlet-name>
@@ -15,4 +17,15 @@
         <servlet-name>hello</servlet-name>
         <url-pattern>/hello</url-pattern>
     </servlet-mapping>
+
+    <!--404-->
+    <servlet>
+        <servlet-name>error</servlet-name>
+        <servlet-class>com.kuang.servlet.ErrorServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>error</servlet-name>
+        <url-pattern>/*</url-pattern>
+    </servlet-mapping>
+    
 </web-app>
