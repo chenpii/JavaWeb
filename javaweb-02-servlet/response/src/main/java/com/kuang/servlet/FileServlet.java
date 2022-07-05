@@ -23,7 +23,7 @@ public class FileServlet extends HttpServlet {
         System.out.println("下载文件的路径：" + filePath);
         //2.下载的文件名是啥？
         String fileName = filePath.substring(filePath.lastIndexOf("\\") + 1);
-        //3.设置想办法让浏览器能够支持下载我们需要的东西
+        //3.设置想办法让浏览器能够支持(Content-disposition)下载我们需要的东西,中文文件名使用URLEncoder.encode进行编码,否则有可能乱码
         //web下载文件头
         resp.setHeader("Content-disposition", "attachment;filename=" + URLEncoder.encode(fileName, "utf-8"));
         //4.获取下载文件的输入流
