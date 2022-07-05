@@ -47,4 +47,13 @@
         <servlet-name>sd4</servlet-name>
         <url-pattern>/sd4</url-pattern>
     </servlet-mapping>
+
+    <servlet>
+        <servlet-name>sd5</servlet-name>
+        <servlet-class>com.kuang.servlet.ServletDemo05</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>sd5</servlet-name>
+        <url-pattern>/sd5</url-pattern>
+    </servlet-mapping>
 </web-app>
