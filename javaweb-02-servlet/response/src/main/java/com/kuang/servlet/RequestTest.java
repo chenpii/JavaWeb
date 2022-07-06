@@ -19,5 +19,6 @@ public class RequestTest extends HttpServlet {
         System.out.println(username + ":" + password);
         //重定向至成功页面
         resp.sendRedirect("/r/success.jsp");
+
     }
 }
