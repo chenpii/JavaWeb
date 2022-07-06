@@ -11,10 +11,10 @@
         用户名：<input type="text" name="username"><br>
         密码：<input type="password" name="password"><br>
         爱好：
-        <input type="checkbox" name="hobbys" value="游戏">
-        <input type="checkbox" name="hobbys" value="运动">
-        <input type="checkbox" name="hobbys" value="唱歌">
-        <input type="checkbox" name="hobbys" value="电影">
+        <input type="checkbox" name="hobbys" value="游戏">游戏
+        <input type="checkbox" name="hobbys" value="运动">运动
+        <input type="checkbox" name="hobbys" value="唱歌">唱歌
+        <input type="checkbox" name="hobbys" value="电影">电影
         <input type="submit">
     </form>
 </div>
