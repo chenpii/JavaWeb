@@ -6,4 +6,13 @@
          version="4.0"
          metadata-complete="true">
 
+    
+    <servlet>
+        <servlet-name>CookieDemo01</servlet-name>
+        <servlet-class>com.kuang.servlet.CookieDemo01</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>CookieDemo01</servlet-name>
+        <url-pattern>/c1</url-pattern>
+    </servlet-mapping>
 </web-app>
