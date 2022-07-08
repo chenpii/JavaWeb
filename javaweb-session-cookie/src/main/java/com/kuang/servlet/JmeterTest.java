@@ -35,7 +35,7 @@ public class JmeterTest {
      * 生成比余额大0.01的交易金额，并保持精度
      *
      */
-    public void MakeBiggerMonTrans() {
+    public void makeBiggerMonTrans() {
         BigDecimal p1 = new BigDecimal(Double.toString(100.1));
         BigDecimal p2 = new BigDecimal(Double.toString(0.01));
         BigDecimal p3 = new BigDecimal(Double.toString(0.01));
@@ -43,6 +43,28 @@ public class JmeterTest {
         String monTrans = p1.add(p2).add(p3).doubleValue() + "";
         System.out.println(monTrans);
 
+    }
+
+    /**
+     * 计算消费管理费
+     */
+    public void getConsumeMgFee() {
+        String monTrans = "1.75";
+//        String ChargeFeeMode = vars.get("ChargeFeeMode_1");
+        String ChargeFeeMode = "1";
+//        String ChargeFeeMoney = vars.get("ChargeFeeMoney_1");
+        String ChargeFeeMoney = "20";
+
+        if (ChargeFeeMode != null) {
+            //按比例收取消费管理费
+            if (ChargeFeeMode.equals("1")) {
+
+            } else if (ChargeFeeMode.equals("2")) {
+                //定额收取消费管理费
+
+            }
+
+        }
     }
 
 }
