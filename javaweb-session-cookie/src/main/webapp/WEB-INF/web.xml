@@ -60,6 +60,7 @@
         <servlet-name>SessionDemo03</servlet-name>
         <url-pattern>/s3</url-pattern>
     </servlet-mapping>
+
     <!--设置Session默认的失效时间-->
     <session-config>
         <!--1分钟后Session自动失效，单位为分钟-->
