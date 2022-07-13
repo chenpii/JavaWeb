@@ -71,7 +71,7 @@ public class JmeterTest {
         if (ChargeFeeMode != null) {
             //按比例收取消费管理费
             if (ChargeFeeMode.equals("1")) {
-                consumeMgFee = monTrans.multiply(new BigDecimal(ChargeFeeMoney)).divide(new BigDecimal(100), 2, BigDecimal.ROUND_DOWN);
+                consumeMgFee = monTrans.multiply(new BigDecimal(ChargeFeeMoney)).divide(new BigDecimal(100), 2, BigDecimal.ROUND_DOWN).stripTrailingZeros();
 
             } else if (ChargeFeeMode.equals("2")) {
                 //定额收取消费管理费
