@@ -6,10 +6,10 @@
 <body>
 <%--内置对象--%>
 <%
-    pageContext.setAttribute("name1","张三1号");//保存的数据只在一个页面中有效
-    request.setAttribute("name2","张三2号");//保存的数据只在一次请求中有效，请求转发会携带这个数据
-    session.setAttribute("name3","张三3号");//保存的数据只在一次会话中有效，从打开浏览器到关闭浏览器
-    application.setAttribute("name4","张三4号");//保存的数据在服务器中有效，从打开服务器到关闭服务器
+    pageContext.setAttribute("name1", "张三1号");//保存的数据只在一个页面中有效
+    request.setAttribute("name2", "张三2号");//保存的数据只在一次请求中有效，请求转发会携带这个数据
+    session.setAttribute("name3", "张三3号");//保存的数据只在一次会话中有效，从打开浏览器到关闭浏览器
+    application.setAttribute("name4", "张三4号");//保存的数据在服务器中有效，从打开服务器到关闭服务器
 
 %>
 
@@ -25,6 +25,8 @@
     String name3 = (String) pageContext.findAttribute("name3");
     String name4 = (String) pageContext.findAttribute("name4");
     String name5 = (String) pageContext.findAttribute("name5");//不存在
+
+    pageContext.forward("pageDemo02.jsp");
 %>
 
 <%--使用EL表达式输出 ${}--%>
