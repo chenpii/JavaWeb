@@ -10,7 +10,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="4674c015-6f8c-4591-9ee5-178545f83789" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/kuang/util/Constant.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kuang/util/Constant.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -185,7 +185,7 @@
       <option name="presentableId" value="Default" />
       <updated>1658112820536</updated>
       <workItem from="1658112823849" duration="7643000" />
-      <workItem from="1658371432056" duration="14670000" />
+      <workItem from="1658371432056" duration="15567000" />
     </task>
     <servers />
   </component>
