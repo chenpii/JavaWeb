@@ -28,4 +28,12 @@
         <url-pattern>/servlet/*</url-pattern>
     </filter-mapping>
 
+    <!--注册监听器-->
+    <listener>
+        <listener-class>com.kuang.listener.OnlineCountListener</listener-class>
+    </listener>
+
+    <session-config>
+        <session-timeout>1</session-timeout>
+    </session-config>
 </web-app>
