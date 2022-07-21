@@ -4,6 +4,26 @@
          xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd"
          version="4.0">
 
+
+    <servlet>
+        <servlet-name>LoginServlet</servlet-name>
+        <servlet-class>com.kuang.servlet.LoginServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>LoginServlet</servlet-name>
+        <url-pattern>/servlet/login</url-pattern>
+    </servlet-mapping>
+
+
+    <servlet>
+        <servlet-name>LogoutServlet</servlet-name>
+        <servlet-class>com.kuang.servlet.LogoutServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>LogoutServlet</servlet-name>
+        <url-pattern>/servlet/logout</url-pattern>
+    </servlet-mapping>
+
     <servlet>
         <servlet-name>ShowServlet</servlet-name>
         <servlet-class>com.kuang.servlet.ShowServlet</servlet-class>
@@ -17,6 +37,7 @@
         <url-pattern>/show</url-pattern>
     </servlet-mapping>
 
+
     <!--过滤器-->
     <filter>
         <filter-name>CharacterEncodingFilter</filter-name>
@@ -26,6 +47,15 @@
         <filter-name>CharacterEncodingFilter</filter-name>
         <!--只要是/servlet的任何请求，都会经过这个过滤器-->
         <url-pattern>/servlet/*</url-pattern>
+    </filter-mapping>
+
+    <filter>
+        <filter-name>SysFilter</filter-name>
+        <filter-class>com.kuang.filter.SysFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>SysFilter</filter-name>
+        <url-pattern>/sys/*</url-pattern>
     </filter-mapping>
 
     <!--注册监听器-->
