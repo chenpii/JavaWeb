@@ -19,15 +19,26 @@ public class TestJdbc2 {
         //2.连接数据库,代表数据库
         Connection connection = DriverManager.getConnection(url, username, password);
 
-        //3.向数据库发送sql的对象Statement ： CRUD
-        Statement statement = connection.createStatement();
+        //3.编写SQL
+        String sql = "insert into users(id, name, password, email, birthday) values (?,?,?,?,?)";
 
-        //4.编写SQL
-        String sql = "select * from users";
-//        String sql = "delete from users where id = 4;";
+        //4.预编译
+        PreparedStatement preparedStatement = connection.prepareStatement(sql);
+        preparedStatement.setInt(1, 4);//给第一个占位符？的值赋值为1
+        preparedStatement.setString(2, "狂神说Java");//给第二个占位符？的值赋值为狂神说Java
+        preparedStatement.setString(3, "123456");//给第三个占位符？的值赋值为123456
+        preparedStatement.setString(4, "kuang@qq.com");//给第四个占位符？的值赋值为kuang@qq.com
+        preparedStatement.setDate(5, new Date(new java.util.Date().getTime()));//给第五个占位符？的值赋值为new Date(new java.util.Date().getTime())
+
+
+        //5.执行sql
+        int i = preparedStatement.executeUpdate();
+        if (i > 0) {
+            System.out.println("插入成功");
+        }
 
         //6.关闭连接释放资源(一定要做）先开后关
-        statement.close();
+        preparedStatement.close();
         connection.close();
     }
 }
