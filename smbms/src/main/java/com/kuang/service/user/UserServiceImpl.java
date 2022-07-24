@@ -35,7 +35,12 @@ public class UserServiceImpl implements UserService {
         } finally {
             BaseDao.closeResource(connection, null, null);
         }
-        return user;
+
+        if ( user != null &&user.getUserPassword().equals(password)) {
+            return user;
+        } else {
+            return null;
+        }
     }
 
     @Test
