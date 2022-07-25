@@ -19,7 +19,7 @@ public class UserServiceImpl implements UserService {
     //业务层都会调用dao层，所以我们要引入dao层
     private UserDao userDao;
 
-    public UserServiceImpl() {
+    public UserServiceImpl() {//无参构造器
         userDao = new UserDaoImpl();
     }
 
@@ -36,11 +36,28 @@ public class UserServiceImpl implements UserService {
             BaseDao.closeResource(connection, null, null);
         }
 
-        if ( user != null &&user.getUserPassword().equals(password)) {
+        if (user != null && user.getUserPassword().equals(password)) {
             return user;
         } else {
             return null;
         }
+    }
+
+    public boolean updatePwd(int id, String password) {
+        Connection connection = null;
+        boolean flag = false;
+        //修改密码
+        try {
+            connection = BaseDao.getConnection();
+            if (userDao.updatePwd(connection, id, password) > 0) {
+                flag = true;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            BaseDao.closeResource(connection, null, null);
+        }
+        return flag;
     }
 
     @Test
