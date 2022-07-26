@@ -23,6 +23,10 @@
         <url-pattern>/jsp/*</url-pattern>
     </filter-mapping>
 
+    <!-- 默认Session有效期：真实业务需求-->
+    <session-config>
+        <session-timeout>30</session-timeout>
+    </session-config>
 
     <!--设置欢迎页面-->
     <welcome-file-list>
