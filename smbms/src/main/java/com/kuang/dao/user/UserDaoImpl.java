@@ -60,11 +60,13 @@ public class UserDaoImpl implements UserDao {
     }
 
     //查询用户数总数
-    public int getUserCount(Connection connection, String userName, int userRole) {
+    public int getUserCount(Connection connection, String userName, int userRole) throws SQLException {
         PreparedStatement pstm = null;
+        ResultSet rs = null;
+        int count = 0;
         StringBuffer sql = new StringBuffer();
-        sql.append("select count(1) from smbms_user su left join smbms_role sr on su.userRole = sr.id");
 
+        sql.append("select count(1) as count from smbms_user su left join smbms_role sr on su.userRole = sr.id");
         //存放参数
         ArrayList<Object> arrayList = new ArrayList<Object>();
 
@@ -86,14 +88,22 @@ public class UserDaoImpl implements UserDao {
         }
         //转换成数组
         Object[] params = arrayList.toArray();
-              
 
-        System.out.println(sql.toString());
-        return 0;
+        System.out.println("UserDaoImpl->getUserCount:" + sql.toString());//输出最后的sql语句
+
+        if (connection != null) {
+            rs = BaseDao.executeQuery(connection, pstm, String.valueOf(sql), params);
+
+            if (rs.next()) {
+                count = rs.getInt("count");//从结果集中获取最终的数量
+            }
+        }
+        return count;
+
     }
 
     @Test
-    public void testgetUserCount() {
+    public void testgetUserCount() throws SQLException {
         getUserCount(null, "admin", 1);
         getUserCount(null, "admin", 0);
         getUserCount(null, null, 1);

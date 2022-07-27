@@ -18,5 +18,5 @@ public interface UserDao {
     public int updatePwd(Connection connection, int id, String password) throws SQLException;
 
     //根据用户名或者角色查询用户总数
-    public int getUserCount(Connection connection,String userName, int userRole);
+    public int getUserCount(Connection connection,String userName, int userRole)throws SQLException;
 }
