@@ -37,7 +37,11 @@ public class UserServlet extends HttpServlet {
         doGet(req, resp);
     }
 
-    //修改密码
+    /**
+     * 修改密码
+     * @param req
+     * @param resp
+     */
     public void updatePwd(HttpServletRequest req, HttpServletResponse resp) {
         //从Session中获取user
         Object o = req.getSession().getAttribute(Constants.USER_SESSION);
@@ -69,7 +73,11 @@ public class UserServlet extends HttpServlet {
         }
     }
 
-    //验证旧密码
+    /**
+     * 验证输入的旧密码
+     * @param req
+     * @param resp
+     */
     public void pwdmodify(HttpServletRequest req, HttpServletResponse resp) {
         //从Session中获取密码
         Object o = req.getSession().getAttribute(Constants.USER_SESSION);

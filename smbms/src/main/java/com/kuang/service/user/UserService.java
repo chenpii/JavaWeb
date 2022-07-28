@@ -15,4 +15,7 @@ public interface UserService {
 
     //根据user_id修改密码
     public boolean updatePwd( int id , String password);
+
+    //根据用户名或者角色查询用户总数
+    public int getUserCount(String userName, int userRole);
 }

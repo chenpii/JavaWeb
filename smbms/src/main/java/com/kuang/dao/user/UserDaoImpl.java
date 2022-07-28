@@ -7,14 +7,20 @@ import org.junit.Test;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author chenpi
  * @create 2022-07-23 23:01
  */
 public class UserDaoImpl implements UserDao {
-
-    //得到要登录的用户
+    /**
+     * 得到要登录的用户
+     * @param connection
+     * @param userCode 用户编码
+     * @return
+     * @throws SQLException
+     */
     public User getLoginUser(Connection connection, String userCode) throws SQLException {
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
@@ -46,7 +52,14 @@ public class UserDaoImpl implements UserDao {
         return user;
     }
 
-    //修改当前用户密码
+    /**
+     * 修改当前用户密码
+     * @param connection
+     * @param id 用户id
+     * @param password 密码
+     * @return
+     * @throws SQLException
+     */
     public int updatePwd(Connection connection, int id, String password) throws SQLException {
         PreparedStatement pstm = null;
         int updateRows = 0;
@@ -59,14 +72,21 @@ public class UserDaoImpl implements UserDao {
         return updateRows;
     }
 
-    //查询用户数总数
+    /**
+     * 查询用户数总数
+     * @param connection
+     * @param userName 用户名称
+     * @param userRole 用户角色
+     * @return
+     * @throws SQLException
+     */
     public int getUserCount(Connection connection, String userName, int userRole) throws SQLException {
         PreparedStatement pstm = null;
         ResultSet rs = null;
         int count = 0;
         StringBuffer sql = new StringBuffer();
-
         sql.append("select count(1) as count from smbms_user su left join smbms_role sr on su.userRole = sr.id");
+
         //存放参数
         ArrayList<Object> arrayList = new ArrayList<Object>();
 
@@ -86,6 +106,7 @@ public class UserDaoImpl implements UserDao {
                 }
             }
         }
+
         //转换成数组
         Object[] params = arrayList.toArray();
 
@@ -93,13 +114,27 @@ public class UserDaoImpl implements UserDao {
 
         if (connection != null) {
             rs = BaseDao.executeQuery(connection, pstm, String.valueOf(sql), params);
-
             if (rs.next()) {
                 count = rs.getInt("count");//从结果集中获取最终的数量
             }
         }
+        BaseDao.closeResource(null, pstm, null);//connection 在业务层关闭
         return count;
 
+    }
+
+    /**
+     *
+     * @param connection
+     * @param userName 用户名称
+     * @param userRole 用户角色
+     * @param currentPageNo 当前页码
+     * @param pageSize 每页条数
+     * @return
+     * @throws SQLException
+     */
+    public List<User> getUserList(Connection connection, String userName, int userRole, int currentPageNo, int pageSize) throws SQLException {
+        return null;
     }
 
     @Test

@@ -23,7 +23,12 @@ public class UserServiceImpl implements UserService {
         userDao = new UserDaoImpl();
     }
 
-
+    /**
+     * 用户登录
+     * @param userCode 用户编码
+     * @param password 密码
+     * @return
+     */
     public User login(String userCode, String password) {
         Connection connection = null;
         User user = null;
@@ -43,6 +48,12 @@ public class UserServiceImpl implements UserService {
         }
     }
 
+    /**
+     * 根据user_id修改密码
+     * @param id 用户id
+     * @param password 新密码
+     * @return
+     */
     public boolean updatePwd(int id, String password) {
         Connection connection = null;
         boolean flag = false;
@@ -60,10 +71,43 @@ public class UserServiceImpl implements UserService {
         return flag;
     }
 
+    /**
+     * 根据用户名或者角色查询用户总数
+     * @param userName 用户名称
+     * @param userRole 用户角色
+     * @return
+     */
+    public int getUserCount(String userName, int userRole) {
+
+        Connection connection = null;
+        int userCount = 0;
+        try {
+            connection = BaseDao.getConnection();
+            userCount = userDao.getUserCount(connection, userName, userRole);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            BaseDao.closeResource(connection, null, null);
+        }
+        return userCount;
+    }
+
     @Test
-    public void test() {
-        UserServiceImpl userService = new UserServiceImpl();
-        User admin = userService.login("admin", "88888888");
+    public void test_login() {
+        User admin = this.login("admin", "88888888");
         System.out.println(admin.getUserPassword());
+    }
+
+    @Test
+    public void test_getUserCount(){
+        int count = this.getUserCount(null,2);
+        System.out.println(count);
+        count = this.getUserCount("张",0);
+        System.out.println(count);
+        count = this.getUserCount(null,0);
+        System.out.println(count);
+        count = this.getUserCount("张",3);
+        System.out.println(count);
+
     }
 }
