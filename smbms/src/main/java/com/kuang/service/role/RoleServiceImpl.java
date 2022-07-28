@@ -16,6 +16,7 @@ import java.util.List;
  * @create 2022-07-28 18:53
  */
 public class RoleServiceImpl implements RoleService {
+    //引入Dao
     private RoleDao roleDao;
 
     public RoleServiceImpl() {
@@ -43,7 +44,7 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Test
-    public void test_getUserList() {
+    public void test_getRoleList() {
         for (Role role : getRoleList()) {
             System.out.println(role.getRoleName());
         }
