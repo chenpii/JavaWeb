@@ -29,6 +29,8 @@ public class UserServlet extends HttpServlet {
             this.updatePwd(req, resp);
         } else if (method != null && method.equals("pwdmodify")) {
             this.pwdmodify(req, resp);
+        } else if (method != null && method.equals("query")) {
+            this.query(req, resp);
         }
     }
 
@@ -39,6 +41,7 @@ public class UserServlet extends HttpServlet {
 
     /**
      * 修改密码
+     *
      * @param req
      * @param resp
      */
@@ -75,6 +78,7 @@ public class UserServlet extends HttpServlet {
 
     /**
      * 验证输入的旧密码
+     *
      * @param req
      * @param resp
      */
@@ -111,6 +115,38 @@ public class UserServlet extends HttpServlet {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * 用户管理
+     *
+     * @param req
+     * @param resp
+     */
+    //重点、难点
+    private void query(HttpServletRequest req, HttpServletResponse resp) {
+
+        //查询用户列表
+
+        //从前端获取数据
+        String queryUserName = req.getParameter("queryname");
+        String temp = req.getParameter("queryUserRole");
+        String pageIndex = req.getParameter("pageIndex");
+        int queryUserRole = 0;
+
+        //获取用户列表
+        UserService userService = new UserServiceImpl();
+
+        //第一次走这个请求，一定是第一页，页面大小固定的
+        int pageSize = Constants.USER_LIST_PAGESIZE;
+
+        if (queryUserName == null) {
+            queryUserName = "";
+        }
+        if (!StringUtils.isNullOrEmpty(temp)) {
+            queryUserRole = Integer.parseInt(temp); //给查询赋值 0,1,2,3
+        }
+
     }
 
 }

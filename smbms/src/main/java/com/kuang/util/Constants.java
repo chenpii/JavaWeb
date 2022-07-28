@@ -6,4 +6,6 @@ package com.kuang.util;
  */
 public class Constants {
     public final static String USER_SESSION = "userSession";
+
+    public final static int USER_LIST_PAGESIZE = 5;//用户管理首次访问默认页面大小
 }

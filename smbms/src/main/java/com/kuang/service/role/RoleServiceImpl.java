@@ -9,6 +9,7 @@ import org.junit.Test;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -45,7 +46,8 @@ public class RoleServiceImpl implements RoleService {
 
     @Test
     public void test_getRoleList() {
-        for (Role role : getRoleList()) {
+        List<Role> roleList = getRoleList();
+        for (Role role : roleList) {
             System.out.println(role.getRoleName());
         }
     }
