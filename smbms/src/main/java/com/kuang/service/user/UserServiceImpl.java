@@ -128,20 +128,7 @@ public class UserServiceImpl implements UserService {
         return userList;
     }
 
-    public List<Role> getRoleList() {
-        Connection connection = null;
-        List<Role> roleList = new ArrayList<Role>();
-        try {
-            connection = BaseDao.getConnection();
-            roleList = userDao.getRoleList(connection);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            BaseDao.closeResource(connection, null, null);
-        }
 
-        return roleList;
-    }
 
     @Test
     public void test_login() {
@@ -161,4 +148,6 @@ public class UserServiceImpl implements UserService {
         System.out.println(count);
 
     }
+
+
 }

@@ -25,7 +25,6 @@ public interface UserDao {
     //根据查询条件获取用户列表
     public List<User> getUserList(Connection connection, String userName, int userRole, int currentPageNo, int pageSize) throws SQLException;
 
-    //获取用户角色列表
-    public List<Role> getRoleList(Connection connection) throws SQLException;
+
 
 }

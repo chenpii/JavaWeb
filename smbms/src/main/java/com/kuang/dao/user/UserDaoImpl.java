@@ -204,33 +204,7 @@ public class UserDaoImpl implements UserDao {
         return userList;
     }
 
-    /**
-     * 获取用户角色列表
-     * @param connection
-     * @return
-     * @throws SQLException
-     */
-    public List<Role> getRoleList(Connection connection) throws SQLException {
-        PreparedStatement pstm = null;
-        List<Role> roleList = new ArrayList<Role>();
-        if (connection != null) {
-            String sql = "select * from smbms_role";
-            ResultSet rs = BaseDao.executeQuery(connection, pstm, sql, null);
-            while (rs.next()) {
-                Role role = new Role();
-                role.setId(rs.getInt("id"));
-                role.setRoleCode(rs.getString("roleCode"));
-                role.setRoleName(rs.getString("roleName"));
-                role.setCreatedBy(rs.getInt("createdBy"));
-                role.setCreationDate(rs.getDate("creationDate"));
-                role.setModifyBy(rs.getInt("modifyBy"));
-                role.setModifyDate(rs.getDate("modifyDate"));
-                roleList.add(role);
-            }
-            BaseDao.closeResource(null, pstm, rs);
-        }
-        return roleList;
-    }
+
 
     @Test
     public void test_getUserCount() throws SQLException {
@@ -239,4 +213,5 @@ public class UserDaoImpl implements UserDao {
         getUserCount(null, null, 1);
         getUserCount(null, null, 0);
     }
+
 }

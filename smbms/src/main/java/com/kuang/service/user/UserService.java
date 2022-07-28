@@ -24,6 +24,5 @@ public interface UserService {
     //根据查询条件获取用户列表
     public List<User> getUserList(String userName, int userRole, int currentPageNo, int pageSize);
 
-    //获取用户角色列表
-    public List<Role> getRoleList();
+
 }
