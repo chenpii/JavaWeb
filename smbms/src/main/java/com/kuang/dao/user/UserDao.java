@@ -1,5 +1,6 @@
 package com.kuang.dao.user;
 
+import com.kuang.pojo.Role;
 import com.kuang.pojo.User;
 
 import java.sql.Connection;
@@ -19,8 +20,12 @@ public interface UserDao {
     public int updatePwd(Connection connection, int id, String password) throws SQLException;
 
     //根据用户名或者角色查询用户总数
-    public int getUserCount(Connection connection,String userName, int userRole)throws SQLException;
+    public int getUserCount(Connection connection, String userName, int userRole) throws SQLException;
 
     //根据查询条件获取用户列表
-    public List<User> getUserList(Connection connection,String userName, int userRole,int currentPageNo,int pageSize)throws SQLException;
+    public List<User> getUserList(Connection connection, String userName, int userRole, int currentPageNo, int pageSize) throws SQLException;
+
+    //获取用户角色列表
+    public List<Role> getRoleList(Connection connection) throws SQLException;
+
 }

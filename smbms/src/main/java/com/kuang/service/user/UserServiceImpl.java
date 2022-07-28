@@ -3,11 +3,14 @@ package com.kuang.service.user;
 import com.kuang.dao.BaseDao;
 import com.kuang.dao.user.UserDao;
 import com.kuang.dao.user.UserDaoImpl;
+import com.kuang.pojo.Role;
 import com.kuang.pojo.User;
 import org.junit.Test;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author chenpi
@@ -25,6 +28,7 @@ public class UserServiceImpl implements UserService {
 
     /**
      * 用户登录
+     *
      * @param userCode 用户编码
      * @param password 密码
      * @return
@@ -32,8 +36,8 @@ public class UserServiceImpl implements UserService {
     public User login(String userCode, String password) {
         Connection connection = null;
         User user = null;
-        connection = BaseDao.getConnection();
         try {
+            connection = BaseDao.getConnection();
             user = userDao.getLoginUser(connection, userCode);
         } catch (SQLException e) {
             e.printStackTrace();
@@ -50,7 +54,8 @@ public class UserServiceImpl implements UserService {
 
     /**
      * 根据user_id修改密码
-     * @param id 用户id
+     *
+     * @param id       用户id
      * @param password 新密码
      * @return
      */
@@ -73,6 +78,7 @@ public class UserServiceImpl implements UserService {
 
     /**
      * 根据用户名或者角色查询用户总数
+     *
      * @param userName 用户名称
      * @param userRole 用户角色
      * @return
@@ -92,6 +98,51 @@ public class UserServiceImpl implements UserService {
         return userCount;
     }
 
+    /**
+     * 根据查询条件获取用户列表
+     *
+     * @param userName      用户名称
+     * @param userRole      用户角色
+     * @param currentPageNo 当前页码
+     * @param pageSize      每页最大记录
+     * @return
+     */
+    public List<User> getUserList(String userName, int userRole, int currentPageNo, int pageSize) {
+
+        Connection connection = null;
+        List<User> userList = new ArrayList<User>();
+        System.out.println("UserServiceImpl-->getUserList-->userName:" + userName);
+        System.out.println("UserServiceImpl-->getUserList-->userRole:" + userRole);
+        System.out.println("UserServiceImpl-->getUserList-->currentPageNo:" + currentPageNo);
+        System.out.println("UserServiceImpl-->getUserList-->pageSize:" + pageSize);
+
+        try {
+            connection = BaseDao.getConnection();
+            userList = userDao.getUserList(connection, userName, userRole, currentPageNo, pageSize);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            BaseDao.closeResource(connection, null, null);
+        }
+
+        return userList;
+    }
+
+    public List<Role> getRoleList() {
+        Connection connection = null;
+        List<Role> roleList = new ArrayList<Role>();
+        try {
+            connection = BaseDao.getConnection();
+            roleList = userDao.getRoleList(connection);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            BaseDao.closeResource(connection, null, null);
+        }
+
+        return roleList;
+    }
+
     @Test
     public void test_login() {
         User admin = this.login("admin", "88888888");
@@ -99,14 +150,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Test
-    public void test_getUserCount(){
-        int count = this.getUserCount(null,2);
+    public void test_getUserCount() {
+        int count = this.getUserCount(null, 2);
         System.out.println(count);
-        count = this.getUserCount("张",0);
+        count = this.getUserCount("张", 0);
         System.out.println(count);
-        count = this.getUserCount(null,0);
+        count = this.getUserCount(null, 0);
         System.out.println(count);
-        count = this.getUserCount("张",3);
+        count = this.getUserCount("张", 3);
         System.out.println(count);
 
     }
