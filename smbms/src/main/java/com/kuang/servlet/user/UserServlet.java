@@ -1,7 +1,10 @@
 package com.kuang.servlet.user;
 
 import com.alibaba.fastjson.JSONArray;
+import com.kuang.pojo.Role;
 import com.kuang.pojo.User;
+import com.kuang.service.role.RoleService;
+import com.kuang.service.role.RoleServiceImpl;
 import com.kuang.service.user.UserService;
 import com.kuang.service.user.UserServiceImpl;
 import com.kuang.util.Constants;
@@ -126,7 +129,7 @@ public class UserServlet extends HttpServlet {
      * @param resp
      */
     //重点、难点
-    private void query(HttpServletRequest req, HttpServletResponse resp) {
+    private void query(HttpServletRequest req, HttpServletResponse resp)  {
 
         //查询用户列表
 
@@ -174,7 +177,30 @@ public class UserServlet extends HttpServlet {
 
         //获取用户列表展示
         userList = userService.getUserList(queryUserName, queryUserRole, currentPageNo, pageSize);
-        req.setAttribute("userList",userList);
+        req.setAttribute("userList", userList);
+
+        //获取用户角色列表
+        RoleService roleService = new RoleServiceImpl();
+        List<Role> roleList = roleService.getRoleList();
+        req.setAttribute("roleList", roleList);
+
+        req.setAttribute("totalCount", totalCount);
+        req.setAttribute("currentPageNo", currentPageNo);
+        req.setAttribute("totalPageCount", totalPageCount);
+
+        req.setAttribute("queryUserName", queryUserName);//每次查询完保留查询条件
+        req.setAttribute("queryUserRole", queryUserRole);
+
+
+
+        //返回页面
+        try {
+            req.getRequestDispatcher("/jsp/userlist.jsp").forward(req, resp);
+        } catch (ServletException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
 
     }

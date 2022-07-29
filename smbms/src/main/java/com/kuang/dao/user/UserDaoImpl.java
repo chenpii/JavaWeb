@@ -171,7 +171,7 @@ public class UserDaoImpl implements UserDao {
         // 1 01234
         // 2 56789
         // 3 10 11 12 13 14
-        sql.append(" order by creationDate limit ?,?");
+        sql.append(" order by su.creationDate limit ?,?");
         int startIndex = (currentPageNo - 1) * pageSize;
         arrayList.add(startIndex);
         arrayList.add(pageSize);
@@ -196,7 +196,7 @@ public class UserDaoImpl implements UserDao {
                 user.setCreationDate(rs.getDate("creationDate"));
                 user.setModifyBy(rs.getInt("modifyBy"));
                 user.setModifyDate(rs.getDate("modifyDate"));
-                user.setUserName(rs.getString("userRoleName"));
+                user.setUserRoleName(rs.getString("roleName"));
                 userList.add(user);
             }
             BaseDao.closeResource(null, pstm, rs);//connection 在业务层关闭
