@@ -129,7 +129,6 @@ public class UserServiceImpl implements UserService {
     }
 
 
-
     @Test
     public void test_login() {
         User admin = this.login("admin", "88888888");

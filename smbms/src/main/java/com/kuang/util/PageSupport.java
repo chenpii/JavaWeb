@@ -1,5 +1,7 @@
 package com.kuang.util;
 
+import org.junit.Test;
+
 public class PageSupport {
     //当前页码-来自于用户输入
     private int currentPageNo = 1;
@@ -65,4 +67,13 @@ public class PageSupport {
         }
     }
 
+    @Test
+    public void test(){
+        PageSupport pageSupport = new PageSupport();
+        pageSupport.setPageSize(5);
+        pageSupport.setTotalCount(10);
+        pageSupport.setCurrentPageNo(1);
+
+        System.out.println(pageSupport.getTotalPageCount());
+    }
 }

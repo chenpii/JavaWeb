@@ -5,6 +5,7 @@ import com.kuang.pojo.User;
 import com.kuang.service.user.UserService;
 import com.kuang.service.user.UserServiceImpl;
 import com.kuang.util.Constants;
+import com.kuang.util.PageSupport;
 import com.mysql.cj.util.StringUtils;
 
 import javax.servlet.ServletException;
@@ -14,6 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -136,9 +138,11 @@ public class UserServlet extends HttpServlet {
 
         //获取用户列表
         UserService userService = new UserServiceImpl();
+        List<User> userList = null;
 
         //第一次走这个请求，一定是第一页，页面大小固定的
         int pageSize = Constants.USER_LIST_PAGESIZE;
+        int currentPageNo = 1;
 
         if (queryUserName == null) {
             queryUserName = "";
@@ -146,6 +150,32 @@ public class UserServlet extends HttpServlet {
         if (!StringUtils.isNullOrEmpty(temp)) {
             queryUserRole = Integer.parseInt(temp); //给查询赋值 0,1,2,3
         }
+        if (!StringUtils.isNullOrEmpty(pageIndex)) {
+            currentPageNo = Integer.parseInt(pageIndex);
+        }
+
+        //获取用户的总数(分页：存在上一页、下一页的情况)
+        int totalCount = userService.getUserCount(queryUserName, queryUserRole);
+        //总页数支持
+        PageSupport pageSupport = new PageSupport();
+        pageSupport.setPageSize(pageSize);//需先赋值，否则默认值为0报 除0异常
+        pageSupport.setTotalCount(totalCount);
+        pageSupport.setCurrentPageNo(currentPageNo);
+
+        //获取总页数
+        int totalPageCount = pageSupport.getTotalPageCount();
+
+        //控制首页和尾页
+        if (currentPageNo < 1) {//当前页小于1，显示首页
+            currentPageNo = 1;
+        } else if (currentPageNo > totalPageCount) { //当前页大于总页数，显示尾页
+            currentPageNo = totalPageCount;
+        }
+
+        //获取用户列表展示
+        userList = userService.getUserList(queryUserName, queryUserRole, currentPageNo, pageSize);
+        req.setAttribute("userList",userList);
+
 
     }
 
