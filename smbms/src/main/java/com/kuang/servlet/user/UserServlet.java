@@ -220,7 +220,7 @@ public class UserServlet extends HttpServlet {
         Object o = req.getSession().getAttribute(Constants.USER_SESSION);
         if (o != null) {
             User createUser = (User) o;
-            createUser.getUserCode()
+            String createBy = createUser.getUserCode();
         }
 
         //从前端获取待新建用户的数据
