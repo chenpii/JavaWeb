@@ -24,5 +24,7 @@ public interface UserService {
     //根据查询条件获取用户列表
     public List<User> getUserList(String userName, int userRole, int currentPageNo, int pageSize);
 
+    //新增用户
+    public boolean addUser(User user);
 
 }

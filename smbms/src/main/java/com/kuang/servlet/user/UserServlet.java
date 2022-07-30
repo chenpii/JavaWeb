@@ -17,6 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -36,8 +37,11 @@ public class UserServlet extends HttpServlet {
             this.pwdmodify(req, resp);
         } else if (method != null && method.equals("query")) {
             this.query(req, resp);
+        } else if (method != null && method.equals("add")) {
+            this.add(req, resp);
         }
     }
+
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -123,13 +127,13 @@ public class UserServlet extends HttpServlet {
     }
 
     /**
-     * 用户管理
+     * 用户管理页面查询
      *
      * @param req
      * @param resp
      */
     //重点、难点
-    private void query(HttpServletRequest req, HttpServletResponse resp)  {
+    private void query(HttpServletRequest req, HttpServletResponse resp) {
 
         //查询用户列表
 
@@ -191,8 +195,6 @@ public class UserServlet extends HttpServlet {
         req.setAttribute("queryUserName", queryUserName);//每次查询完保留查询条件
         req.setAttribute("queryUserRole", queryUserRole);
 
-
-
         //返回页面
         try {
             req.getRequestDispatcher("/jsp/userlist.jsp").forward(req, resp);
@@ -205,4 +207,48 @@ public class UserServlet extends HttpServlet {
 
     }
 
+
+    /**
+     * 新增用户
+     *
+     * @param req
+     * @param resp
+     */
+    private void add(HttpServletRequest req, HttpServletResponse resp) {
+
+        //获取Session
+        Object o = req.getSession().getAttribute(Constants.USER_SESSION);
+        if (o != null) {
+            User createUser = (User) o;
+            createUser.getUserCode()
+        }
+
+        //从前端获取待新建用户的数据
+        String userCode = req.getParameter("userCode");
+        String userName = req.getParameter("userName");
+        String userPassword = req.getParameter("userPassword");
+        int gender = Integer.parseInt(req.getParameter("gender"));
+        Date birthday = com.kuang.util.StringUtils.transferString2Date(req.getParameter("birthday"));
+        String phone = req.getParameter("phone");
+        String address = req.getParameter("address");
+        int userRole = Integer.parseInt(req.getParameter("userRole"));
+
+
+        if ((!StringUtils.isNullOrEmpty(userCode))
+                && (!StringUtils.isNullOrEmpty(userName))
+                && (!StringUtils.isNullOrEmpty(userPassword))
+                && gender != 0
+                && userRole != 0) {
+            User user = new User();
+            user.setUserCode(userCode);
+            user.setUserName(userName);
+            user.setUserPassword(userPassword);
+            user.setUserCode(userCode);
+            user.setUserCode(userCode);
+            user.setUserCode(userCode);
+
+        }
+
+
+    }
 }

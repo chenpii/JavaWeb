@@ -12,6 +12,8 @@ import java.util.List;
  * @create 2022-07-23 22:54
  */
 public interface UserDao {
+    //新增用户
+    public int addUser(Connection connection, User user) throws SQLException;
 
     //得到要登录的用户
     public User getLoginUser(Connection connection, String userCode) throws SQLException;
@@ -24,7 +26,6 @@ public interface UserDao {
 
     //根据查询条件获取用户列表
     public List<User> getUserList(Connection connection, String userName, int userRole, int currentPageNo, int pageSize) throws SQLException;
-
 
 
 }

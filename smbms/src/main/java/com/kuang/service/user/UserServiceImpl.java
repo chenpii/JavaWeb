@@ -5,6 +5,7 @@ import com.kuang.dao.user.UserDao;
 import com.kuang.dao.user.UserDaoImpl;
 import com.kuang.pojo.Role;
 import com.kuang.pojo.User;
+import com.sun.xml.internal.fastinfoset.algorithm.FloatEncodingAlgorithm;
 import org.junit.Test;
 
 import java.sql.Connection;
@@ -128,6 +129,44 @@ public class UserServiceImpl implements UserService {
         return userList;
     }
 
+    /**
+     * 新增用户
+     *
+     * @param user 用户
+     * @return
+     */
+    public boolean addUser(User user) {
+        Connection connection = null;
+        boolean flag = false;
+
+        try {
+            connection = BaseDao.getConnection();
+            //取消自动提交，开启手动管理事务
+            connection.setAutoCommit(false);
+            int updateRows = userDao.addUser(connection, user);
+            connection.commit();//手动提交事务
+
+            if (updateRows > 0) {
+                flag = true;
+                System.out.println("UserServiceImpl-->addUser:successed!");
+            } else {
+                System.out.println("UserServiceImpl-->addUser:failed!");
+
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            try {
+                System.out.println("=============rollback=============");
+                connection.rollback();//失败则回滚事务
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        } finally {
+            //在service层进行对connection的关闭
+            BaseDao.closeResource(connection, null, null);
+        }
+        return flag;
+    }
 
     @Test
     public void test_login() {

@@ -204,7 +204,29 @@ public class UserDaoImpl implements UserDao {
         return userList;
     }
 
+    /**
+     * 新增用户
+     *
+     * @param connection
+     * @param user       用户对象
+     * @return
+     */
+    public int addUser(Connection connection, User user) throws SQLException {
+        PreparedStatement pstm = null;
+        int updateRows = 0;
 
+        if (connection != null) {
+
+            String sql = "insert into  smbms_user set (userCode,userName,userPassword,gender,birthday,phone,address,userRole,createdBy,creationDate) " +
+                    "values(?,?,?,?,?,?,?,?,?,？)";
+            Object[] params = {user.getUserCode(), user.getUserName(), user.getUserPassword(), user.getGender(),
+                    user.getBirthday(), user.getPhone(), user.getAddress(), user.getUserRole(), user.getCreatedBy(), user.getCreationDate()};
+
+            updateRows = BaseDao.executeUpdate(connection, pstm, sql, params);
+            BaseDao.closeResource(null, pstm, null);
+        }
+        return updateRows;
+    }
 
     @Test
     public void test_getUserCount() throws SQLException {
