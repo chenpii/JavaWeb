@@ -1,5 +1,6 @@
 package com.kuang.servlet.user;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.kuang.pojo.Role;
 import com.kuang.pojo.User;
@@ -10,6 +11,7 @@ import com.kuang.service.user.UserServiceImpl;
 import com.kuang.util.Constants;
 import com.kuang.util.PageSupport;
 import com.mysql.cj.util.StringUtils;
+import org.junit.Test;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -17,6 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -39,6 +42,8 @@ public class UserServlet extends HttpServlet {
             this.query(req, resp);
         } else if (method != null && method.equals("add")) {
             this.add(req, resp);
+        } else if (method != null && method.equals("deluser")) {
+            this.deluser(req, resp);
         }
     }
 
@@ -218,9 +223,10 @@ public class UserServlet extends HttpServlet {
 
         //获取Session
         Object o = req.getSession().getAttribute(Constants.USER_SESSION);
+        int createBy = 0;
         if (o != null) {
             User createUser = (User) o;
-            String createBy = createUser.getUserCode();
+            createBy = createUser.getId();
         }
 
         //从前端获取待新建用户的数据
@@ -232,23 +238,71 @@ public class UserServlet extends HttpServlet {
         String phone = req.getParameter("phone");
         String address = req.getParameter("address");
         int userRole = Integer.parseInt(req.getParameter("userRole"));
+        Date creationDate = new Date();
 
+        User user = new User();
+        user.setUserCode(userCode);
+        user.setUserName(userName);
+        user.setUserPassword(userPassword);
+        user.setGender(gender);
+        user.setBirthday(birthday);
+        user.setPhone(phone);
+        user.setAddress(address);
+        user.setUserRole(userRole);
+        user.setCreatedBy(createBy);
+        user.setCreationDate(creationDate);
 
-        if ((!StringUtils.isNullOrEmpty(userCode))
-                && (!StringUtils.isNullOrEmpty(userName))
-                && (!StringUtils.isNullOrEmpty(userPassword))
-                && gender != 0
-                && userRole != 0) {
-            User user = new User();
-            user.setUserCode(userCode);
-            user.setUserName(userName);
-            user.setUserPassword(userPassword);
-            user.setUserCode(userCode);
-            user.setUserCode(userCode);
-            user.setUserCode(userCode);
-
+        UserService userService = new UserServiceImpl();
+        if (userService.addUser(user)) {
+            try {
+                resp.sendRedirect(req.getContextPath() + "/jsp/user.do?method=query");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } else {
+            try {
+                req.getRequestDispatcher("useradd.jsp").forward(req, resp);
+            } catch (ServletException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
+    }
+
+    /**
+     * 删除用户
+     *
+     * @param req
+     * @param resp
+     */
+    private void deluser(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        String id = req.getParameter("userid");
+        int userId = 0;
+        try {
+            userId = Integer.parseInt(id);
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+        }
+
+        HashMap<String, String> resultMap = new HashMap<String, String>();
+        UserService userService = new UserServiceImpl();
+        if (userId < 0) {
+            resultMap.put("delResult", "notexist");
+        } else if (userService.delUserById(userId)) {
+            resultMap.put("delResult", "true");
+        } else {
+            resultMap.put("delResult", "false");
+        }
+
+        //把resultMap转换成json返回
+        resp.setContentType("application/json");
+        PrintWriter outWriter = resp.getWriter();
+        outWriter.write(JSONArray.toJSONString(resultMap));
+        outWriter.flush();
+        outWriter.close();
 
 
     }
+
 }

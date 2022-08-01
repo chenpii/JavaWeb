@@ -1,5 +1,7 @@
 package com.kuang.util;
 
+import org.junit.Test;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -41,5 +43,15 @@ public class StringUtils {
         return date;
     }
 
+    @Test
+    public void test_transferString2DateTime() {
+        Date date_util=new Date(System.currentTimeMillis());
+        System.out.println(date_util);
+        java.sql.Date date_sql =new java.sql.Date(System.currentTimeMillis());
+        System.out.println(date_sql);
+
+        String format = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(date_sql);
+        System.out.println(format);
+    }
 
 }

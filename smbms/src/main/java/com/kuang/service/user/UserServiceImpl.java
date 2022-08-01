@@ -168,6 +168,41 @@ public class UserServiceImpl implements UserService {
         return flag;
     }
 
+    /**
+     * 删除用户
+     *
+     * @param userId 用户id
+     * @return
+     */
+    public boolean delUserById(int userId) {
+        Connection connection = null;
+        boolean flag = false;
+
+        try {
+            connection = BaseDao.getConnection();
+            connection.setAutoCommit(false);
+            int updateRows = userDao.delUser(connection, userId);
+            connection.commit();
+            if (updateRows > 0) {
+                flag = true;
+                System.out.println("UserServiceImpl-->delUser:successed!");
+            } else {
+                System.out.println("UserServiceImpl-->delUser:failed!");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            try {
+                System.out.println("=============rollback=============");
+                connection.rollback();//失败则回滚事务
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        } finally {
+            BaseDao.closeResource(connection, null, null);
+        }
+        return flag;
+    }
+
     @Test
     public void test_login() {
         User admin = this.login("admin", "88888888");

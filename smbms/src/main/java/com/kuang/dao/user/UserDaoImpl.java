@@ -228,6 +228,26 @@ public class UserDaoImpl implements UserDao {
         return updateRows;
     }
 
+    /**
+     * 删除用户
+     *
+     * @param connection
+     * @param userId     用户id
+     * @return
+     * @throws SQLException
+     */
+    public int delUser(Connection connection, int userId) throws SQLException {
+        PreparedStatement pstm = null;
+        int updateRows = 0;
+        if (connection != null) {
+            String sql = "delete from smbms_user where id=?";
+            Object[] params = {userId};
+            updateRows = BaseDao.executeUpdate(connection, pstm, sql, params);
+            BaseDao.closeResource(null, pstm, null);
+        }
+        return updateRows;
+    }
+
     @Test
     public void test_getUserCount() throws SQLException {
         getUserCount(null, "admin", 1);

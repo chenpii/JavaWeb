@@ -15,6 +15,9 @@ public interface UserDao {
     //新增用户
     public int addUser(Connection connection, User user) throws SQLException;
 
+    //删除
+    public int delUser(Connection connection, int userId) throws SQLException;
+
     //得到要登录的用户
     public User getLoginUser(Connection connection, String userCode) throws SQLException;
 

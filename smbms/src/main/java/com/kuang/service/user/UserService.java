@@ -27,4 +27,7 @@ public interface UserService {
     //新增用户
     public boolean addUser(User user);
 
+    //删除用户
+    public boolean delUserById(int userId);
+
 }
