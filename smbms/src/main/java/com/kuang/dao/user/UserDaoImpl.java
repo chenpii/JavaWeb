@@ -6,6 +6,7 @@ import com.kuang.pojo.User;
 import com.mysql.cj.util.StringUtils;
 import org.junit.Test;
 
+import javax.sound.midi.Soundbank;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -214,14 +215,21 @@ public class UserDaoImpl implements UserDao {
     public int addUser(Connection connection, User user) throws SQLException {
         PreparedStatement pstm = null;
         int updateRows = 0;
-
+        System.out.println("UserDaoImpl->addUser->user:" + user.toString());
         if (connection != null) {
 
-            String sql = "insert into  smbms_user set (userCode,userName,userPassword,gender,birthday,phone,address,userRole,createdBy,creationDate) " +
-                    "values(?,?,?,?,?,?,?,?,?,？)";
-            Object[] params = {user.getUserCode(), user.getUserName(), user.getUserPassword(), user.getGender(),
-                    user.getBirthday(), user.getPhone(), user.getAddress(), user.getUserRole(), user.getCreatedBy(), user.getCreationDate()};
-
+            String sql = "insert into smbms_user (userCode,userName,userPassword,gender,birthday,phone,address,userRole,createdBy,creationDate) " +
+                    " values(?,?,?,?,?,?,?,?,?,?)";
+            Object[] params = {user.getUserCode(),
+                    user.getUserName(),
+                    user.getUserPassword(),
+                    user.getGender(),
+                    user.getBirthday(),
+                    user.getPhone(),
+                    user.getAddress(),
+                    user.getUserRole(),
+                    user.getCreatedBy(),
+                    user.getCreationDate()};
             updateRows = BaseDao.executeUpdate(connection, pstm, sql, params);
             BaseDao.closeResource(null, pstm, null);
         }
@@ -246,6 +254,45 @@ public class UserDaoImpl implements UserDao {
             BaseDao.closeResource(null, pstm, null);
         }
         return updateRows;
+    }
+
+    /**
+     * 根据userCode获取用户
+     *
+     * @param connection
+     * @param userCode   用户编码
+     * @return
+     * @throws SQLException
+     */
+    public User getUserByUserCode(Connection connection, String userCode) throws SQLException {
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        User user = null;
+
+        if (connection != null) {
+            String sql = "select * from smbms_user where userCode=? ";
+            Object[] params = {userCode};
+            resultSet = BaseDao.executeQuery(connection, preparedStatement, sql, params);
+
+            if (resultSet.next()) {
+                user = new User();
+                user.setId(resultSet.getInt("id"));
+                user.setUserCode(resultSet.getString("userCode"));
+                user.setUserName(resultSet.getString("userName"));
+                user.setUserPassword(resultSet.getString("userPassword"));
+                user.setGender(resultSet.getInt("gender"));
+                user.setBirthday(resultSet.getDate("birthday"));
+                user.setPhone(resultSet.getString("phone"));
+                user.setAddress(resultSet.getString("address"));
+                user.setUserRole(resultSet.getInt("userRole"));
+                user.setCreatedBy(resultSet.getInt("createdBy"));
+                user.setCreationDate(resultSet.getDate("creationDate"));
+                user.setModifyBy(resultSet.getInt("modifyBy"));
+                user.setModifyDate(resultSet.getDate("modifyDate"));
+            }
+            BaseDao.closeResource(null, preparedStatement, resultSet);
+        }
+        return user;
     }
 
     @Test

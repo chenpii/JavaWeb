@@ -30,4 +30,7 @@ public interface UserService {
     //删除用户
     public boolean delUserById(int userId);
 
+    //根据userCode判断用户是否存在
+    public User userCodeExist(String userCode);
+
 }

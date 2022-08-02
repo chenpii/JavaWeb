@@ -7,6 +7,7 @@ import com.kuang.pojo.User;
 import org.junit.Test;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -201,6 +202,28 @@ public class UserServiceImpl implements UserService {
         return flag;
     }
 
+    /**
+     * 根据userCode查询是否已存在
+     *
+     * @param userCode
+     * @return
+     */
+    public User userCodeExist(String userCode) {
+        Connection connection = null;
+        PreparedStatement pstm = null;
+        User user = null;
+
+        try {
+            connection = BaseDao.getConnection();
+            user = userDao.getUserByUserCode(connection, userCode);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            BaseDao.closeResource(connection, pstm, null);
+        }
+        return user;
+    }
+
     @Test
     public void test_login() {
         User admin = this.login("admin", "88888888");
@@ -219,6 +242,5 @@ public class UserServiceImpl implements UserService {
         System.out.println(count);
 
     }
-
 
 }

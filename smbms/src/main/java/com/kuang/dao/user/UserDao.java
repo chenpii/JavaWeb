@@ -18,7 +18,7 @@ public interface UserDao {
     //删除
     public int delUser(Connection connection, int userId) throws SQLException;
 
-    //得到要登录的用户
+    //根据userCode得到要登录的用户
     public User getLoginUser(Connection connection, String userCode) throws SQLException;
 
     //修改当前用户密码
@@ -30,5 +30,7 @@ public interface UserDao {
     //根据查询条件获取用户列表
     public List<User> getUserList(Connection connection, String userName, int userRole, int currentPageNo, int pageSize) throws SQLException;
 
+    //根据userCode查询用户
+    public User getUserByUserCode(Connection connection, String userCode) throws SQLException;
 
 }

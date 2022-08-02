@@ -20,10 +20,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author chenpi
@@ -44,6 +41,10 @@ public class UserServlet extends HttpServlet {
             this.add(req, resp);
         } else if (method != null && method.equals("deluser")) {
             this.deluser(req, resp);
+        } else if (method != null && method.equals("getrolelist")) {
+            this.getRoleList(req, resp);
+        } else if (method != null && method.equals("ucexist")) {
+            this.userCodeExist(req, resp);
         }
     }
 
@@ -212,7 +213,6 @@ public class UserServlet extends HttpServlet {
 
     }
 
-
     /**
      * 新增用户
      *
@@ -302,7 +302,56 @@ public class UserServlet extends HttpServlet {
         outWriter.flush();
         outWriter.close();
 
+    }
+
+    /**
+     * 获取角色列表
+     *
+     * @param req
+     * @param resp
+     */
+    private void getRoleList(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        //获取用户角色列表
+        RoleService roleService = new RoleServiceImpl();
+        List<Role> roleList = roleService.getRoleList();
+        req.setAttribute("roleList", roleList);
+
+        //把roleList转换成json返回
+        resp.setContentType("application/json");
+        PrintWriter outWriter = resp.getWriter();
+        outWriter.write(JSONArray.toJSONString(roleList));
+        outWriter.flush();
+        outWriter.close();
 
     }
 
+    /**
+     * 根据userCode查询用户是否存在
+     *
+     * @param req
+     * @param resp
+     */
+    private void userCodeExist(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        String userCode = req.getParameter("userCode");
+
+        HashMap<String, String> resultMap = new HashMap<String, String>();
+        if (StringUtils.isNullOrEmpty(userCode)) {
+            resultMap.put("userCode", "exist");
+        } else {
+            UserService userService = new UserServiceImpl();
+            User user = userService.userCodeExist(userCode);
+            if (user != null) {
+                resultMap.put("userCode", "exist");
+            } else {
+                resultMap.put("userCode", "notexist");
+            }
+        }
+
+        //转成json返回
+        resp.setContentType("application/json");
+        PrintWriter outWriter = resp.getWriter();
+        outWriter.write(JSONArray.toJSONString(resultMap));
+        outWriter.flush();
+        outWriter.close();
+    }
 }
