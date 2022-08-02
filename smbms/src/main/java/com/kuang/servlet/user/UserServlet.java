@@ -45,6 +45,12 @@ public class UserServlet extends HttpServlet {
             this.getRoleList(req, resp);
         } else if (method != null && method.equals("ucexist")) {
             this.userCodeExist(req, resp);
+        } else if (method != null && method.equals("view")) {
+            this.getUserById(req, resp, "userview.jsp");
+        } else if (method != null && method.equals("modify")) {
+            this.getUserById(req, resp, "usermodify.jsp");
+        } else if (method != null && method.equals("modifyexe")) {
+            this.modifyUser(req, resp);
         }
     }
 
@@ -353,5 +359,38 @@ public class UserServlet extends HttpServlet {
         outWriter.write(JSONArray.toJSONString(resultMap));
         outWriter.flush();
         outWriter.close();
+    }
+
+    /**
+     * 根据userId获取用户
+     *
+     * @param req
+     * @param resp
+     */
+    private void getUserById(HttpServletRequest req, HttpServletResponse resp, String url) throws ServletException, IOException {
+        String id = req.getParameter("uid");
+        int userId = 0;
+        if (!StringUtils.isNullOrEmpty(id)) {
+            try {
+                userId = Integer.parseInt(id);
+            } catch (NumberFormatException e) {
+                e.printStackTrace();
+            }
+        }
+        UserService userService = new UserServiceImpl();
+        User user = userService.getUserById(userId);
+        req.setAttribute("user", user);
+        req.getRequestDispatcher(url).forward(req, resp);
+    }
+
+    /**
+     * 更新用户信息
+     *
+     * @param req
+     * @param resp
+     */
+    private void modifyUser(HttpServletRequest req, HttpServletResponse resp) {
+        int uid = Integer.parseInt(req.getParameter("uid"));
+
     }
 }

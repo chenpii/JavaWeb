@@ -295,6 +295,67 @@ public class UserDaoImpl implements UserDao {
         return user;
     }
 
+    /**
+     * 根据用户id获取用户
+     *
+     * @param connection
+     * @param userId     用户id
+     * @return
+     * @throws SQLException
+     */
+    public User getUserById(Connection connection, int userId) throws SQLException {
+        PreparedStatement pstm = null;
+        ResultSet resultSet = null;
+        User user = null;
+        if (connection != null) {
+            String sql = "select su.*,sr.roleName as userRoleName " +
+                    "from smbms_user su " +
+                    "left outer join smbms_role sr on su.userRole = sr.id " +
+                    "where su.id=?";
+            Object[] params = {userId};
+            resultSet = BaseDao.executeQuery(connection, pstm, sql, params);
+            while (resultSet.next()) {
+                user = new User();
+                user.setId(resultSet.getInt("id"));
+                user.setUserCode(resultSet.getString("userCode"));
+                user.setUserName(resultSet.getString("userName"));
+                user.setUserPassword(resultSet.getString("userPassword"));
+                user.setGender(resultSet.getInt("gender"));
+                user.setBirthday(resultSet.getDate("birthday"));
+                user.setPhone(resultSet.getString("phone"));
+                user.setAddress(resultSet.getString("address"));
+                user.setUserRole(resultSet.getInt("userRole"));
+                user.setCreatedBy(resultSet.getInt("createdBy"));
+                user.setCreationDate(resultSet.getDate("creationDate"));
+                user.setModifyBy(resultSet.getInt("modifyBy"));
+                user.setModifyDate(resultSet.getDate("modifyDate"));
+                user.setUserRoleName(resultSet.getString("userRoleName"));
+            }
+            BaseDao.closeResource(null, pstm, resultSet);
+        }
+        return user;
+    }
+
+    /**
+     * 更新用户信息
+     *
+     * @param connection
+     * @param user       用户对象
+     * @return
+     * @throws SQLException
+     */
+    public int modifyUser(Connection connection, User user) throws SQLException {
+        PreparedStatement pstm = null;
+        int updateRows = 0;
+        if (connection != null) {
+            String sql = "update smbms_user set userName=?,gender=?,birthday=?,phone=?,address=?,userRole where id=?";
+            Object[] params = {user.getUserName(), user.getGender(), user.getBirthday(), user.getPhone(), user.getUserRole(), user.getId()};
+            updateRows = BaseDao.executeUpdate(connection, pstm, sql, params);
+            BaseDao.closeResource(null, pstm, null);
+        }
+        return updateRows;
+    }
+
     @Test
     public void test_getUserCount() throws SQLException {
         getUserCount(null, "admin", 1);

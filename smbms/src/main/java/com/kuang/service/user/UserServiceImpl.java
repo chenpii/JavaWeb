@@ -224,6 +224,61 @@ public class UserServiceImpl implements UserService {
         return user;
     }
 
+    /**
+     * 根据用户Id获取用户
+     *
+     * @param userId
+     * @return
+     */
+    public User getUserById(int userId) {
+        Connection connection = null;
+        User user = null;
+        try {
+            connection = BaseDao.getConnection();
+            user = userDao.getUserById(connection, userId);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            BaseDao.closeResource(connection, null, null);
+        }
+        return user;
+    }
+
+    /**
+     * 更新用户信息
+     *
+     * @param user
+     * @return
+     * @throws SQLException
+     */
+    public boolean modifyUser(User user) {
+        Connection connection = null;
+        boolean flag = false;
+        try {
+            connection = BaseDao.getConnection();
+            connection.setAutoCommit(false);
+            int updateRows = userDao.modifyUser(connection, user);
+            connection.commit();
+            if (updateRows > 0) {
+                flag = true;
+                System.out.println("UserServiceImpl-->modifyUser:successed!");
+            } else {
+                System.out.println("UserServiceImpl-->modifyUser:failed!");
+            }
+        } catch (SQLException e) {
+            System.out.println("=============rollback=============");
+            e.printStackTrace();
+            try {
+                connection.rollback();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        } finally {
+            BaseDao.closeResource(connection, null, null);
+        }
+        return flag;
+    }
+
     @Test
     public void test_login() {
         User admin = this.login("admin", "88888888");

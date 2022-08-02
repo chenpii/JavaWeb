@@ -30,7 +30,13 @@ public interface UserDao {
     //根据查询条件获取用户列表
     public List<User> getUserList(Connection connection, String userName, int userRole, int currentPageNo, int pageSize) throws SQLException;
 
-    //根据userCode查询用户
+    //根据userCode获取用户
     public User getUserByUserCode(Connection connection, String userCode) throws SQLException;
+
+    //根据userId获取用户
+    public User getUserById(Connection connection, int userId) throws SQLException;
+
+    //更新用户信息
+    public int modifyUser(Connection connection, User user) throws SQLException;
 
 }

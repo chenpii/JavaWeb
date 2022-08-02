@@ -27,10 +27,17 @@ public interface UserService {
     //新增用户
     public boolean addUser(User user);
 
-    //删除用户
+    //根据userId删除用户
     public boolean delUserById(int userId);
 
-    //根据userCode判断用户是否存在
+    //根据userCode获取用户
     public User userCodeExist(String userCode);
+
+    //根据userId获取用户
+    public User getUserById(int userId);
+
+    //更新用户信息
+    public boolean modifyUser(User user) throws SQLException;
+
 
 }
