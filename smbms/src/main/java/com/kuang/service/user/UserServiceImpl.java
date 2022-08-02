@@ -3,9 +3,7 @@ package com.kuang.service.user;
 import com.kuang.dao.BaseDao;
 import com.kuang.dao.user.UserDao;
 import com.kuang.dao.user.UserDaoImpl;
-import com.kuang.pojo.Role;
 import com.kuang.pojo.User;
-import com.sun.xml.internal.fastinfoset.algorithm.FloatEncodingAlgorithm;
 import org.junit.Test;
 
 import java.sql.Connection;
