@@ -37,7 +37,7 @@ public interface UserService {
     public User getUserById(int userId);
 
     //更新用户信息
-    public boolean modifyUser(User user) throws SQLException;
+    public boolean modifyUser(User user) ;
 
 
 }

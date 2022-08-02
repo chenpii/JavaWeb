@@ -348,8 +348,8 @@ public class UserDaoImpl implements UserDao {
         PreparedStatement pstm = null;
         int updateRows = 0;
         if (connection != null) {
-            String sql = "update smbms_user set userName=?,gender=?,birthday=?,phone=?,address=?,userRole where id=?";
-            Object[] params = {user.getUserName(), user.getGender(), user.getBirthday(), user.getPhone(), user.getUserRole(), user.getId()};
+            String sql = "update smbms_user set userName=?,gender=?,birthday=?,phone=?,address=?,userRole=?,modifyBy=?,modifyDate=? where id=?";
+            Object[] params = {user.getUserName(), user.getGender(), user.getBirthday(), user.getPhone(), user.getAddress(), user.getUserRole(), user.getModifyBy(), user.getModifyDate(), user.getId()};
             updateRows = BaseDao.executeUpdate(connection, pstm, sql, params);
             BaseDao.closeResource(null, pstm, null);
         }

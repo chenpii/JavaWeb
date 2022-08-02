@@ -19,6 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -367,7 +368,7 @@ public class UserServlet extends HttpServlet {
      * @param req
      * @param resp
      */
-    private void getUserById(HttpServletRequest req, HttpServletResponse resp, String url) throws ServletException, IOException {
+    private void getUserById(HttpServletRequest req, HttpServletResponse resp, String url) throws  IOException {
         String id = req.getParameter("uid");
         int userId = 0;
         if (!StringUtils.isNullOrEmpty(id)) {
@@ -380,7 +381,11 @@ public class UserServlet extends HttpServlet {
         UserService userService = new UserServiceImpl();
         User user = userService.getUserById(userId);
         req.setAttribute("user", user);
-        req.getRequestDispatcher(url).forward(req, resp);
+        try {
+            req.getRequestDispatcher(url).forward(req, resp);
+        } catch (ServletException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -389,8 +394,40 @@ public class UserServlet extends HttpServlet {
      * @param req
      * @param resp
      */
-    private void modifyUser(HttpServletRequest req, HttpServletResponse resp) {
+    private void modifyUser(HttpServletRequest req, HttpServletResponse resp) throws  IOException {
+        //获取前端修改后的用户信息
         int uid = Integer.parseInt(req.getParameter("uid"));
+        String userName = req.getParameter("userName");
+        int gender = Integer.parseInt(req.getParameter("gender"));
+        Date birthday = com.kuang.util.StringUtils.transferString2Date(req.getParameter("birthday"));
+        String phone = req.getParameter("phone");
+        String address = req.getParameter("address");
+        int userRole = Integer.parseInt(req.getParameter("userRole"));
+
+        User user = new User();
+        user.setId(uid);
+        user.setUserName(userName);
+        user.setGender(gender);
+        user.setBirthday(birthday);
+        user.setPhone(phone);
+        user.setAddress(address);
+        user.setUserRole(userRole);
+
+        //获取修改者id和修改时间
+        User modifyUser = (User) req.getSession().getAttribute(Constants.USER_SESSION);
+        user.setModifyBy(modifyUser.getId());
+        user.setModifyDate(new Date());
+
+        UserService userService = new UserServiceImpl();
+        if(userService.modifyUser(user)){//修改成功
+            resp.sendRedirect(req.getContextPath() + "/jsp/user.do?method=query");
+        }else {
+            try {
+                req.getRequestDispatcher("usermodify.jsp").forward(req, resp);
+            } catch (ServletException e) {
+                e.printStackTrace();
+            }
+        }
 
     }
 }
