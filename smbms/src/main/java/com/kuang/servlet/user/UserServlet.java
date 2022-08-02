@@ -277,7 +277,7 @@ public class UserServlet extends HttpServlet {
      * @param resp
      */
     private void deluser(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        String id = req.getParameter("userid");
+        String id = req.getParameter("uid");
         int userId = 0;
         try {
             userId = Integer.parseInt(id);
