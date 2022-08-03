@@ -112,6 +112,6 @@ public class ProviderServlet extends HttpServlet {
         req.getParameter("proAddress");
         req.getParameter("proFax");
         req.getParameter("proDesc");
-        
+
     }
 }
