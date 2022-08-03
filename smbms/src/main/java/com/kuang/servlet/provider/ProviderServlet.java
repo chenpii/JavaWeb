@@ -34,8 +34,10 @@ public class ProviderServlet extends HttpServlet {
                 this.modifyProvider(req, resp);
             }
             if (method.equals("add")) {
-
                 this.addProvider(req, resp);
+            }
+            if (method.equals("delprovider")) {
+                this.delProvider(req, resp);
             }
         }
     }
@@ -191,6 +193,34 @@ public class ProviderServlet extends HttpServlet {
             } catch (IOException e) {
                 e.printStackTrace();
             }
+        }
+    }
+
+    /**
+     * 删除供应商
+     *
+     * @param req
+     * @param resp
+     */
+    private void delProvider(HttpServletRequest req, HttpServletResponse resp) {
+        String id = req.getParameter("proid");
+        int proid = 0;
+        try {
+            proid = Integer.parseInt(id);
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+        }
+
+        ProviderService providerService = new ProviderServiceImpl();
+        if (providerService.delProvider(proid)) {
+            //成功，重定向到查询页面
+            try {
+                resp.sendRedirect(req.getContextPath() + "/jsp/provider.do?method=query");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }else {
+
         }
     }
 }

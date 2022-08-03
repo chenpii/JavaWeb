@@ -176,4 +176,41 @@ public class ProviderServiceImpl implements ProviderService {
 
         return flag;
     }
+
+    /**
+     * 删除供应商
+     *
+     * @param providerId 供应商id
+     * @return
+     */
+    public boolean delProvider(int providerId) {
+        Connection connection = null;
+        boolean flag = false;
+
+        try {
+            connection = BaseDao.getConnection();
+            connection.setAutoCommit(false);
+            int updateRows = providerDao.delProvider(connection, providerId);
+            connection.commit();
+
+            if (updateRows > 0) {
+                flag = true;
+                System.out.println("ProviderServiceImpl-->delProvider:successed!");
+            } else {
+                System.out.println("ProviderServiceImpl-->delProvider:failed!");
+            }
+        } catch (SQLException e) {
+            try {
+                System.out.println("==================rollback==================");
+                connection.rollback();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+            e.printStackTrace();
+        } finally {
+            BaseDao.closeResource(connection, null, null);
+        }
+
+        return flag;
+    }
 }

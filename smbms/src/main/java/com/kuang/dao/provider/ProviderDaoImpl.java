@@ -284,6 +284,28 @@ public class ProviderDaoImpl implements ProviderDao {
         return updateRows;
     }
 
+    /**
+     * 删除供应商
+     *
+     * @param connection
+     * @param providerId 供应商id
+     * @return
+     * @throws SQLException
+     */
+    public int delProvider(Connection connection, int providerId) throws SQLException {
+        PreparedStatement pstm = null;
+        int updateRows = 0;
+
+        if (connection != null) {
+            String sql = "delete from smbms_provider where id=?";
+            Object[] params = {providerId};
+            updateRows = BaseDao.executeUpdate(connection, pstm, sql, params);
+            BaseDao.closeResource(null, pstm, null);
+        }
+
+        return updateRows;
+    }
+
     @Test
     public void test_getBillList() throws SQLException {
         this.getProviderList(null, "1", "北京", 1, 5);

@@ -25,4 +25,7 @@ public interface ProviderDao {
     //新增供应商信息
     public int addProvider(Connection connection, Provider provider) throws SQLException;
 
+    //删除供应商
+    public int delProvider(Connection connection, int providerId) throws SQLException;
+
 }
