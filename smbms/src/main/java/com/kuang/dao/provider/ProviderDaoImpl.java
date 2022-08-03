@@ -226,6 +226,32 @@ public class ProviderDaoImpl implements ProviderDao {
         return provider;
     }
 
+    /**
+     * 修改供应商信息
+     *
+     * @param connection
+     * @param provider   供应商对象
+     * @return
+     */
+    public int modifyProvider(Connection connection, Provider provider) throws SQLException {
+        PreparedStatement pstm = null;
+        int updateRows = 0;
+        if (connection != null) {
+            String sql = "update smbms_provider (proCode,proName,proContact,proPhone,proAddress,proFax,proDesc) values(?,?,?,?,?,?,?) where id=?";
+            Object[] params = {provider.getProCode(),
+                    provider.getProName(),
+                    provider.getProContact(),
+                    provider.getProPhone(),
+                    provider.getProAddress(),
+                    provider.getProFax(),
+                    provider.getProDesc(),
+                    provider.getId()};
+            updateRows = BaseDao.executeUpdate(connection, pstm, sql, params);
+            BaseDao.closeResource(null, pstm, null);
+        }
+        return updateRows;
+    }
+
     @Test
     public void test_getBillList() throws SQLException {
         this.getProviderList(null, "1", "北京", 1, 5);

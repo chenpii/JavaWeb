@@ -18,4 +18,7 @@ public interface ProviderService {
 
     //根据供应商id查询供应商信息
     public Provider getProviderById(int providerId);
+
+    //修改供应商信息
+    public boolean modifyProvider(Provider provider);
 }

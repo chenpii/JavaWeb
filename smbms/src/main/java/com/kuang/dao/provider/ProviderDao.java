@@ -19,4 +19,7 @@ public interface ProviderDao {
     //根据供应商id查询供应商信息
     public Provider getProviderById(Connection connection, int providerId) throws SQLException;
 
+    //修改供应商信息
+    public int modifyProvider(Connection connection, Provider provider) throws SQLException;
+
 }
