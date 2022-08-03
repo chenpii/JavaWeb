@@ -138,4 +138,42 @@ public class ProviderServiceImpl implements ProviderService {
         }
         return flag;
     }
+
+    /**
+     * 新增供应商
+     *
+     * @param provider 供应商
+     * @return
+     */
+    public boolean addProvider(Provider provider) {
+        Connection connection = null;
+        boolean flag = false;
+
+        try {
+            connection = BaseDao.getConnection();
+            connection.setAutoCommit(false);
+            int updateRows = providerDao.addProvider(connection, provider);
+            connection.commit();
+
+            if (updateRows > 0) {
+                flag = true;
+                System.out.println("ProviderServiceImpl-->addProvider:successed!");
+            } else {
+                System.out.println("ProviderServiceImpl-->addProvider:failed!");
+            }
+
+        } catch (SQLException e) {
+            try {
+                System.out.println("==================rollback==================");
+                connection.rollback();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+            e.printStackTrace();
+        } finally {
+            BaseDao.closeResource(connection, null, null);
+        }
+
+        return flag;
+    }
 }

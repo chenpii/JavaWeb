@@ -21,4 +21,7 @@ public interface ProviderService {
 
     //修改供应商信息
     public boolean modifyProvider(Provider provider);
+
+    //新增供应商信息
+    public boolean addProvider(Provider provider) ;
 }

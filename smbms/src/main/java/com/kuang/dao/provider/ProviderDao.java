@@ -22,4 +22,7 @@ public interface ProviderDao {
     //修改供应商信息
     public int modifyProvider(Connection connection, Provider provider) throws SQLException;
 
+    //新增供应商信息
+    public int addProvider(Connection connection, Provider provider) throws SQLException;
+
 }

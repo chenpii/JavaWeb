@@ -237,7 +237,7 @@ public class ProviderDaoImpl implements ProviderDao {
         PreparedStatement pstm = null;
         int updateRows = 0;
         if (connection != null) {
-            String sql = "update smbms_provider (proCode,proName,proContact,proPhone,proAddress,proFax,proDesc) values(?,?,?,?,?,?,?) where id=?";
+            String sql = "update smbms_provider set proCode=?,proName=?,proContact=?,proPhone=?,proAddress=?,proFax=?,proDesc=?,modifyBy=?,modifyDate=? where id=?";
             Object[] params = {provider.getProCode(),
                     provider.getProName(),
                     provider.getProContact(),
@@ -245,7 +245,39 @@ public class ProviderDaoImpl implements ProviderDao {
                     provider.getProAddress(),
                     provider.getProFax(),
                     provider.getProDesc(),
+                    provider.getModifyBy(),
+                    provider.getModifyDate(),
                     provider.getId()};
+            updateRows = BaseDao.executeUpdate(connection, pstm, sql, params);
+            BaseDao.closeResource(null, pstm, null);
+        }
+        return updateRows;
+    }
+
+    /**
+     * 新增供应商
+     *
+     * @param connection
+     * @param provider   供应商
+     * @return
+     * @throws SQLException
+     */
+    public int addProvider(Connection connection, Provider provider) throws SQLException {
+        PreparedStatement pstm = null;
+        int updateRows = 0;
+
+        if (connection != null) {
+            String sql = "insert into smbms_provider (proCode,proName,proDesc,proContact,proPhone,proAddress,proFax,createdBy,creationDate) " +
+                    "values(?,?,?,?,?,?,?,?,?)";
+            Object[] params = {provider.getProCode(),
+                    provider.getProName(),
+                    provider.getProDesc(),
+                    provider.getProContact(),
+                    provider.getProPhone(),
+                    provider.getProAddress(),
+                    provider.getProFax(),
+                    provider.getCreatedBy(),
+                    provider.getCreationDate()};
             updateRows = BaseDao.executeUpdate(connection, pstm, sql, params);
             BaseDao.closeResource(null, pstm, null);
         }

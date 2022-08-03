@@ -403,7 +403,7 @@ public class UserServlet extends HttpServlet {
      * @param req
      * @param resp
      */
-    private void modifyUser(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+    private void modifyUser(HttpServletRequest req, HttpServletResponse resp)  {
         //获取前端修改后的用户信息
         int uid = Integer.parseInt(req.getParameter("uid"));
         String userName = req.getParameter("userName");
@@ -428,14 +428,23 @@ public class UserServlet extends HttpServlet {
         user.setModifyDate(new Date());
 
         UserService userService = new UserServiceImpl();
-        if (userService.modifyUser(user)) {//修改成功
-            resp.sendRedirect(req.getContextPath() + "/jsp/user.do?method=query");
+        if (userService.modifyUser(user)) {
+            //修改成功,重定向到查询页面
+            try {
+                resp.sendRedirect(req.getContextPath() + "/jsp/user.do?method=query");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         } else {
+            //修改失败,转发到修改页面
             try {
                 req.getRequestDispatcher("usermodify.jsp").forward(req, resp);
             } catch (ServletException e) {
                 e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
             }
+
         }
 
     }
