@@ -62,10 +62,11 @@ public class ProviderDaoImpl implements ProviderDao {
 
 
     /**
-     *  查询供应商列表
+     * 查询供应商列表
+     *
      * @param connection
-     * @param proCode 供应商编码
-     * @param proName 供应商名称
+     * @param proCode    供应商编码
+     * @param proName    供应商名称
      * @return
      * @throws SQLException
      */
@@ -190,7 +191,40 @@ public class ProviderDaoImpl implements ProviderDao {
         return providersList;
     }
 
+    /**
+     * 根据供应商id获取供应商
+     *
+     * @param connection
+     * @param providerId 供应商id
+     * @return
+     */
+    public Provider getProviderById(Connection connection, int providerId) throws SQLException {
+        PreparedStatement pstm = null;
+        ResultSet rs = null;
+        Provider provider = new Provider();
+        if (connection != null) {
+            String sql = "select * from smbms_provider where id =?";
+            Object[] params = {providerId};
+            rs = BaseDao.executeQuery(connection, pstm, sql, params);
+            while (rs.next()) {
+                provider.setId(rs.getInt("id"));
+                provider.setProCode(rs.getString("proCode"));
+                provider.setProName(rs.getString("proName"));
+                provider.setProDesc(rs.getString("proDesc"));
+                provider.setProContact(rs.getString("proContact"));
+                provider.setProPhone(rs.getString("proPhone"));
+                provider.setProAddress(rs.getString("proAddress"));
+                provider.setProFax(rs.getString("proFax"));
+                provider.setCreatedBy(rs.getInt("createdBy"));
+                provider.setCreationDate(rs.getDate("creationDate"));
+                provider.setModifyBy(rs.getInt("modifyBy"));
+                provider.setModifyDate(rs.getDate("modifyDate"));
+            }
+            BaseDao.closeResource(null, pstm, rs);
+        }
 
+        return provider;
+    }
 
     @Test
     public void test_getBillList() throws SQLException {

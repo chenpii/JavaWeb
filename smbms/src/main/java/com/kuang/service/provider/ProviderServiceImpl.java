@@ -82,4 +82,24 @@ public class ProviderServiceImpl implements ProviderService {
         }
         return providers;
     }
+
+    /**
+     * 根据供应商id查询供应商信息
+     *
+     * @param providerId
+     * @return
+     */
+    public Provider getProviderById(int providerId) {
+        Connection connection = null;
+        Provider provider = null;
+        try {
+            connection = BaseDao.getConnection();
+            provider = providerDao.getProviderById(connection, providerId);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            BaseDao.closeResource(connection, null, null);
+        }
+        return provider;
+    }
 }

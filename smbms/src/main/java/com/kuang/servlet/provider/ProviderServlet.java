@@ -20,6 +20,15 @@ public class ProviderServlet extends HttpServlet {
             if (method.equals("query")) {
                 this.query(req, resp);
             }
+            if (method.equals("view")) {
+                this.getProviderById(req, resp, "/jsp/providerview.jsp");
+            }
+            if (method.equals("modify")) {
+                this.getProviderById(req, resp, "/jsp/providermodify.jsp");
+            }
+            if (method.equals("modifysave")) {
+                this.modifyProvider(req, resp);
+            }
         }
     }
 
@@ -57,5 +66,52 @@ public class ProviderServlet extends HttpServlet {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * 查看供应商信息
+     *
+     * @param req
+     * @param resp
+     */
+    private void getProviderById(HttpServletRequest req, HttpServletResponse resp, String url) {
+        String id = req.getParameter("proid");
+        int proid = 0;
+        try {
+            proid = Integer.parseInt(id);
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+        }
+        ProviderService providerService = new ProviderServiceImpl();
+        Provider provider = providerService.getProviderById(proid);
+        req.setAttribute("provider", provider);
+
+        try {
+            req.getRequestDispatcher(url).forward(req, resp);
+        } catch (ServletException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+
+    /**
+     * 修改供应商信息
+     *
+     * @param req
+     * @param resp
+     */
+    private void modifyProvider(HttpServletRequest req, HttpServletResponse resp) {
+        req.getParameter("id");
+        req.getParameter("proCode");
+        req.getParameter("proName");
+        req.getParameter("proContact");
+        req.getParameter("proPhone");
+        req.getParameter("proAddress");
+        req.getParameter("proFax");
+        req.getParameter("proDesc");
+        
     }
 }

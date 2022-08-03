@@ -11,8 +11,11 @@ public interface ProviderService {
     public int getProviderCount(String proCode, String proName);
 
     //查询获取供应商列表
-    public List<Provider> getProviderList(String proCode, String proName) ;
+    public List<Provider> getProviderList(String proCode, String proName);
 
     //查询获取供应商列表-分页
-    public List<Provider> getProviderList(String proCode, String proName, int currentPageNo, int pageSize) ;
+    public List<Provider> getProviderList(String proCode, String proName, int currentPageNo, int pageSize);
+
+    //根据供应商id查询供应商信息
+    public Provider getProviderById(int providerId);
 }
