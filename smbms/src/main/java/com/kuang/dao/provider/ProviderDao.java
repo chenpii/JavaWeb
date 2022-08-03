@@ -11,5 +11,10 @@ public interface ProviderDao {
     public int getProviderCount(Connection connection, String proCode, String proName)throws SQLException ;
 
     //查询获取供应商列表
+    public List<Provider> getProviderList(Connection connection, String proCode, String proName) throws SQLException;
+
+    //查询获取供应商列表-分页
     public List<Provider> getProviderList(Connection connection, String proCode, String proName,int currentPageNo, int pageSize) throws SQLException;
+
+
 }

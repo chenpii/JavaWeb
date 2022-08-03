@@ -32,26 +32,37 @@ public class UserServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String method = req.getParameter("method");
-        if (method != null && method.equals("savepwd")) {
-            this.updatePwd(req, resp);
-        } else if (method != null && method.equals("pwdmodify")) {
-            this.pwdmodify(req, resp);
-        } else if (method != null && method.equals("query")) {
-            this.query(req, resp);
-        } else if (method != null && method.equals("add")) {
-            this.add(req, resp);
-        } else if (method != null && method.equals("deluser")) {
-            this.deluser(req, resp);
-        } else if (method != null && method.equals("getrolelist")) {
-            this.getRoleList(req, resp);
-        } else if (method != null && method.equals("ucexist")) {
-            this.userCodeExist(req, resp);
-        } else if (method != null && method.equals("view")) {
-            this.getUserById(req, resp, "userview.jsp");
-        } else if (method != null && method.equals("modify")) {
-            this.getUserById(req, resp, "usermodify.jsp");
-        } else if (method != null && method.equals("modifyexe")) {
-            this.modifyUser(req, resp);
+        if (!StringUtils.isNullOrEmpty(method)) {
+            if (method.equals("savepwd")) {
+                this.updatePwd(req, resp);
+            }
+            if (method.equals("pwdmodify")) {
+                this.pwdmodify(req, resp);
+            }
+            if (method.equals("query")) {
+                this.query(req, resp);
+            }
+            if (method.equals("add")) {
+                this.add(req, resp);
+            }
+            if (method.equals("deluser")) {
+                this.deluser(req, resp);
+            }
+            if (method.equals("getrolelist")) {
+                this.getRoleList(req, resp);
+            }
+            if (method.equals("ucexist")) {
+                this.userCodeExist(req, resp);
+            }
+            if (method.equals("view")) {
+                this.getUserById(req, resp, "userview.jsp");
+            }
+            if (method.equals("modify")) {
+                this.getUserById(req, resp, "usermodify.jsp");
+            }
+            if (method.equals("modifyexe")) {
+                this.modifyUser(req, resp);
+            }
         }
     }
 
@@ -147,8 +158,6 @@ public class UserServlet extends HttpServlet {
      */
     //重点、难点
     private void query(HttpServletRequest req, HttpServletResponse resp) {
-
-        //查询用户列表
 
         //从前端获取数据
         String queryUserName = req.getParameter("queryname");
@@ -368,7 +377,7 @@ public class UserServlet extends HttpServlet {
      * @param req
      * @param resp
      */
-    private void getUserById(HttpServletRequest req, HttpServletResponse resp, String url) throws  IOException {
+    private void getUserById(HttpServletRequest req, HttpServletResponse resp, String url) throws IOException {
         String id = req.getParameter("uid");
         int userId = 0;
         if (!StringUtils.isNullOrEmpty(id)) {
@@ -394,7 +403,7 @@ public class UserServlet extends HttpServlet {
      * @param req
      * @param resp
      */
-    private void modifyUser(HttpServletRequest req, HttpServletResponse resp) throws  IOException {
+    private void modifyUser(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         //获取前端修改后的用户信息
         int uid = Integer.parseInt(req.getParameter("uid"));
         String userName = req.getParameter("userName");
@@ -419,9 +428,9 @@ public class UserServlet extends HttpServlet {
         user.setModifyDate(new Date());
 
         UserService userService = new UserServiceImpl();
-        if(userService.modifyUser(user)){//修改成功
+        if (userService.modifyUser(user)) {//修改成功
             resp.sendRedirect(req.getContextPath() + "/jsp/user.do?method=query");
-        }else {
+        } else {
             try {
                 req.getRequestDispatcher("usermodify.jsp").forward(req, resp);
             } catch (ServletException e) {
