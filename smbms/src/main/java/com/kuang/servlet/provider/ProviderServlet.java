@@ -104,14 +104,18 @@ public class ProviderServlet extends HttpServlet {
      * @param resp
      */
     private void modifyProvider(HttpServletRequest req, HttpServletResponse resp) {
-        req.getParameter("id");
-        req.getParameter("proCode");
-        req.getParameter("proName");
-        req.getParameter("proContact");
-        req.getParameter("proPhone");
-        req.getParameter("proAddress");
-        req.getParameter("proFax");
-        req.getParameter("proDesc");
+        Provider provider = new Provider();
+        provider.setId(Integer.valueOf(req.getParameter("id")));
+        provider.setProCode(req.getParameter("proCode"));
+        provider.setProPhone(req.getParameter("proName"));
+        provider.setProPhone(req.getParameter("proContact"));
+        provider.setProPhone(req.getParameter("proPhone"));
+        provider.setProPhone(req.getParameter("proAddress"));
+        provider.setProPhone(req.getParameter("proFax"));
+        provider.setProPhone(req.getParameter("proDesc"));
 
+
+        ProviderService providerService = new ProviderServiceImpl();
+        boolean flag = providerService.modifyProvider(provider);
     }
 }
