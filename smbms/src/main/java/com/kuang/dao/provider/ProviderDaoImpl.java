@@ -17,11 +17,14 @@ public class ProviderDaoImpl implements ProviderDao {
      * 查询供应商列表
      *
      * @param connection
-     * @param proCode    供应商编码
-     * @param proName    供应商名称
+     * @param proCode       供应商编码
+     * @param proName       供应商名称
+     * @param currentPageNo 当前页码
+     * @param pageSize      每页大小
      * @return
+     * @throws SQLException
      */
-    public List<Provider> getProviderList(Connection connection, String proCode, String proName) throws SQLException {
+    public List<Provider> getProviderList(Connection connection, String proCode, String proName, int currentPageNo, int pageSize) throws SQLException {
         PreparedStatement pstm = null;
         ResultSet rs = null;
         List<Provider> providersList = new ArrayList<Provider>();
@@ -46,6 +49,12 @@ public class ProviderDaoImpl implements ProviderDao {
                 arrayList.add("%" + proName + "%");
             }
         }
+        // 在数据库中，分页使用 limit startIndex,pageSize;
+        // startIndex 当前页起始行 =（当前页码-1）*每页最大记录
+        sql.append("order by creationDate limit ?,?");
+        int startIndex = (currentPageNo - 1) * pageSize;
+        arrayList.add(startIndex);
+        arrayList.add(pageSize);
         System.out.println("ProviderDaoImpl-->getProviderList:" + sql);
 
         //参数转换成数组
@@ -122,9 +131,9 @@ public class ProviderDaoImpl implements ProviderDao {
 
     @Test
     public void test_getBillList() throws SQLException {
-        this.getProviderList(null, "1", "北京");
-        this.getProviderList(null, null, "北京");
-        this.getProviderList(null, "1", null);
-        this.getProviderList(null, null, null);
+        this.getProviderList(null, "1", "北京", 1, 5);
+        this.getProviderList(null, null, "北京", 1, 5);
+        this.getProviderList(null, "1", null, 1, 5);
+        this.getProviderList(null, null, null, 1, 5);
     }
 }
