@@ -3,7 +3,6 @@ package com.kuang.servlet.provider;
 import com.kuang.pojo.Provider;
 import com.kuang.service.provider.ProviderService;
 import com.kuang.service.provider.ProviderServiceImpl;
-import com.kuang.util.Constants;
 import com.mysql.cj.util.StringUtils;
 
 import javax.servlet.ServletException;
@@ -30,14 +29,26 @@ public class ProviderServlet extends HttpServlet {
         doGet(req, resp);
     }
 
+    /**
+     * 获取供应商列表
+     *
+     * @param req
+     * @param resp
+     */
     private void query(HttpServletRequest req, HttpServletResponse resp) {
+        //前端获取查询条件
         String queryProCode = req.getParameter("queryProCode");
         String queryProName = req.getParameter("queryProName");
 
+        //获取供应商列表
         ProviderService providerService = new ProviderServiceImpl();
         List<Provider> providerList = providerService.getProviderList(queryProCode, queryProName);
 
         req.setAttribute("providerList", providerList);
+
+        //保留查询条件返回
+        req.setAttribute("queryProCode", queryProCode);
+        req.setAttribute("queryProName", queryProName);
 
         try {
             req.getRequestDispatcher("/jsp/providerlist.jsp").forward(req, resp);
