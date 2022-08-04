@@ -1,8 +1,11 @@
 package com.kuang.servlet.bill;
 
 import com.kuang.pojo.Bill;
+import com.kuang.pojo.Provider;
 import com.kuang.service.bill.BillService;
 import com.kuang.service.bill.BillServiceImpl;
+import com.kuang.service.provider.ProviderService;
+import com.kuang.service.provider.ProviderServiceImpl;
 import com.mysql.cj.util.StringUtils;
 
 import javax.servlet.ServletException;
@@ -53,7 +56,11 @@ public class BillServlet extends HttpServlet {
         BillService billService = new BillServiceImpl();
         List<Bill> billList = billService.getBillList(queryProductName, ProviderId, IsPayment);
 
+        ProviderService providerService = new ProviderServiceImpl();
+        List<Provider> providerList = providerService.getProviderList(null, null);
+
         req.setAttribute("billList", billList);
+        req.setAttribute("providerList", providerList);
         req.setAttribute("queryProductName",queryProductName);
         req.setAttribute("queryProviderId",ProviderId);
         req.setAttribute("queryIsPayment",IsPayment);
