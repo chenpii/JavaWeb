@@ -2,6 +2,8 @@ package com.kuang.servlet.provider;
 
 import com.kuang.pojo.Provider;
 import com.kuang.pojo.User;
+import com.kuang.service.bill.BillService;
+import com.kuang.service.bill.BillServiceImpl;
 import com.kuang.service.provider.ProviderService;
 import com.kuang.service.provider.ProviderServiceImpl;
 import com.kuang.util.Constants;
@@ -211,6 +213,9 @@ public class ProviderServlet extends HttpServlet {
             e.printStackTrace();
         }
 
+        BillService billService = new BillServiceImpl();
+        int billCount = billService.getBillCountByProviderId(proid);
+
         ProviderService providerService = new ProviderServiceImpl();
         if (providerService.delProvider(proid)) {
             //成功，重定向到查询页面
@@ -219,7 +224,7 @@ public class ProviderServlet extends HttpServlet {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        }else {
+        } else {
 
         }
     }
