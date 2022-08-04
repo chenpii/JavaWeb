@@ -126,6 +126,35 @@ public class BillDaoImpl implements BillDao {
         return count;
     }
 
+    /**
+     * 新增订单
+     *
+     * @param connection
+     * @param bill       订单
+     * @return
+     * @throws SQLException
+     */
+    public int addBill(Connection connection, Bill bill) throws SQLException {
+        PreparedStatement pstm = null;
+        int updateRows = 0;
+
+        if (connection != null) {
+            String sql = "insert into smbms_bill (billCode,productName,productDesc,productUnit,productCount,totalPrice,isPayment,createdBy,creationDate) values(?,?,?,?,?,?,?,?,?)";
+            Object[] params = {bill.getBillCode(),
+                    bill.getProductName(),
+                    bill.getProductDesc(),
+                    bill.getProductUnit(),
+                    bill.getProductCount(),
+                    bill.getTotalPrice(),
+                    bill.getIsPayment(),
+                    bill.getCreatedBy(),
+                    bill.getCreationDate()};
+            updateRows = BaseDao.executeUpdate(connection, pstm, sql, params);
+            BaseDao.closeResource(null, pstm, null);
+        }
+        return updateRows;
+    }
+
     @Test
     public void test_getBillList() throws SQLException {
         Connection connection = BaseDao.getConnection();

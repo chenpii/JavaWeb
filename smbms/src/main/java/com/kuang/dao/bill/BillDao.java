@@ -12,4 +12,7 @@ public interface BillDao {
 
     //根据供应商id查询订单总数
     public int getBillCountByProviderId(Connection connection, int providerId) throws SQLException;
+
+    //新增订单
+    public int addBill(Connection connection,Bill bill) throws SQLException;
 }

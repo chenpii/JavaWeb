@@ -58,7 +58,43 @@ public class BillServiceImpl implements BillService {
         } finally {
             BaseDao.closeResource(connection, null, null);
         }
-
         return count;
+    }
+
+    /**
+     * 新增订单
+     *
+     * @param bill
+     * @return
+     */
+    public boolean addBill(Bill bill) {
+        Connection connection = null;
+        boolean flag = false;
+
+        try {
+            connection = BaseDao.getConnection();
+            connection.setAutoCommit(false);
+            int updateRows = billDao.addBill(connection, bill);
+            connection.commit();
+
+            if (updateRows > 0) {
+                System.out.println("BillServiceImpl->addBill:successed!");
+                flag = true;
+            } else {
+                System.out.println("BillServiceImpl->addBill:failed!");
+            }
+
+        } catch (SQLException e) {
+            try {
+                System.out.println("==========rollback==========");
+                connection.rollback();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+            e.printStackTrace();
+        } finally {
+            BaseDao.closeResource(connection, null, null);
+        }
+        return flag;
     }
 }
