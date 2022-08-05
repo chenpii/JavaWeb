@@ -154,7 +154,7 @@ public class BillDaoImpl implements BillDao {
         int updateRows = 0;
 
         if (connection != null) {
-            String sql = "insert into smbms_bill (billCode,productName,productDesc,productUnit,productCount,totalPrice,isPayment,createdBy,creationDate) values(?,?,?,?,?,?,?,?,?)";
+            String sql = "insert into smbms_bill (billCode,productName,productDesc,productUnit,productCount,totalPrice,isPayment,createdBy,creationDate,providerId) values(?,?,?,?,?,?,?,?,?,?)";
             Object[] params = {bill.getBillCode(),
                     bill.getProductName(),
                     bill.getProductDesc(),
@@ -163,7 +163,8 @@ public class BillDaoImpl implements BillDao {
                     bill.getTotalPrice(),
                     bill.getIsPayment(),
                     bill.getCreatedBy(),
-                    bill.getCreationDate()};
+                    bill.getCreationDate(),
+                    bill.getProviderId()};
             updateRows = BaseDao.executeUpdate(connection, pstm, sql, params);
             BaseDao.closeResource(null, pstm, null);
         }
