@@ -19,6 +19,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 public class BillServlet extends HttpServlet {
@@ -245,6 +246,35 @@ public class BillServlet extends HttpServlet {
      * @param resp
      */
     private void delBill(HttpServletRequest req, HttpServletResponse resp) {
-        
+
+        String billid = req.getParameter("billid");
+        int billId = 0;
+        if (!StringUtils.isNullOrEmpty(billid)) {
+            billId = Integer.parseInt(billid);
+        }
+
+        BillService billService = new BillServiceImpl();
+        Bill getBill = billService.getBillById(billId);
+        HashMap<String, String> resultMap = new HashMap<String, String>();
+        if (getBill == null) {
+            resultMap.put("delResult", "notexist");
+        }
+        if (billService.delBill(billId)) {
+            resultMap.put("delResult", "true");
+        } else {
+            resultMap.put("delResult", "false");
+        }
+
+        resp.setContentType("application/json");
+        PrintWriter outWriter = null;
+        try {
+            outWriter = resp.getWriter();
+            outWriter.write(JSONArray.toJSONString(resultMap));
+            outWriter.flush();
+            outWriter.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
     }
 }

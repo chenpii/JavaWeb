@@ -106,7 +106,7 @@ public class BillServiceImpl implements BillService {
      */
     public Bill getBillById(int billId) {
         Connection connection = null;
-        Bill bill = new Bill();
+        Bill bill = null;
         try {
             connection = BaseDao.getConnection();
             bill = billDao.getBillById(connection, billId);
