@@ -15,4 +15,7 @@ public interface BillDao {
 
     //新增订单
     public int addBill(Connection connection,Bill bill) throws SQLException;
+
+    //根据billid获取订单
+    public Bill getBillById(Connection connection,int billId)throws SQLException;
 }

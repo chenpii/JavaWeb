@@ -6,12 +6,14 @@ import com.mysql.cj.jdbc.ConnectionImpl;
 import com.mysql.cj.util.StringUtils;
 import org.junit.Test;
 
+import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 public class BillDaoImpl implements BillDao {
@@ -103,6 +105,19 @@ public class BillDaoImpl implements BillDao {
         return billList;
     }
 
+    @Test
+    public void test_getBillList() throws SQLException {
+        Connection connection = BaseDao.getConnection();
+        this.getBillList(connection, "张", 1, 1);
+        this.getBillList(connection, "张", 1, 0);
+        this.getBillList(connection, "张", 0, 1);
+        this.getBillList(connection, "", 1, 1);
+        this.getBillList(connection, "张", 0, 0);
+        this.getBillList(connection, "", 1, 0);
+        this.getBillList(connection, "", 0, 1);
+        this.getBillList(connection, "", 0, 0);
+    }
+
     /**
      * 根据供应商id查询订单数量
      *
@@ -155,16 +170,41 @@ public class BillDaoImpl implements BillDao {
         return updateRows;
     }
 
-    @Test
-    public void test_getBillList() throws SQLException {
-        Connection connection = BaseDao.getConnection();
-        this.getBillList(connection, "张", 1, 1);
-        this.getBillList(connection, "张", 1, 0);
-        this.getBillList(connection, "张", 0, 1);
-        this.getBillList(connection, "", 1, 1);
-        this.getBillList(connection, "张", 0, 0);
-        this.getBillList(connection, "", 1, 0);
-        this.getBillList(connection, "", 0, 1);
-        this.getBillList(connection, "", 0, 0);
+    /**
+     * 根据订单id获取订单
+     *
+     * @param connection
+     * @param billId     订单id
+     * @return
+     * @throws SQLException
+     */
+    public Bill getBillById(Connection connection, int billId) throws SQLException {
+        PreparedStatement pstm = null;
+        ResultSet rs = null;
+        Bill bill = new Bill();
+        if (connection != null) {
+            String sql = "select sb.*,sp.proName as proName from smbms_bill sb left join smbms_provider sp on sb.providerId=sp.id where sb.id=?";
+            Object[] params = {billId};
+            rs = BaseDao.executeQuery(connection, pstm, sql, params);
+            while (rs.next()) {
+                bill = new Bill();
+                bill.setId(rs.getInt("id"));//id
+                bill.setBillCode(rs.getString("billCode"));//订单编码
+                bill.setProductName(rs.getString("productName")); //商品名称
+                bill.setProductDesc(rs.getString("productDesc")); //商品描述
+                bill.setProductUnit(rs.getString("productUnit")); //商品单位
+                bill.setProductCount(rs.getBigDecimal("productCount"));//商品数量
+                bill.setTotalPrice(rs.getBigDecimal("totalPrice"));//总金额
+                bill.setIsPayment(rs.getInt("isPayment"));//是否支付
+                bill.setCreatedBy(rs.getInt("createdBy"));//创建者
+                bill.setCreationDate(rs.getDate("creationDate"));//创建时间
+                bill.setCreatedBy(rs.getInt("modifyBy"));//更新者
+                bill.setCreationDate(rs.getDate("modifyDate"));//更新时间
+                bill.setProviderId(rs.getInt("providerId"));//供应商id
+                bill.setProviderName(rs.getString("proName"));//供应商名称
+            }
+            BaseDao.closeResource(null, pstm, rs);
+        }
+        return bill;
     }
 }

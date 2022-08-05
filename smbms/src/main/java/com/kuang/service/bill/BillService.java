@@ -15,4 +15,7 @@ public interface BillService {
 
     //新增订单
     public boolean addBill(Bill bill);
+
+    //根据billid获取订单
+    public Bill getBillById(int billId);
 }

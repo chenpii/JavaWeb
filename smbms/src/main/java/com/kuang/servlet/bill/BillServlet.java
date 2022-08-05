@@ -1,5 +1,6 @@
 package com.kuang.servlet.bill;
 
+import com.alibaba.fastjson.JSONArray;
 import com.kuang.pojo.Bill;
 import com.kuang.pojo.Provider;
 import com.kuang.service.bill.BillService;
@@ -13,6 +14,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.List;
 
 public class BillServlet extends HttpServlet {
@@ -23,6 +25,15 @@ public class BillServlet extends HttpServlet {
         if (!StringUtils.isNullOrEmpty(method)) {
             if (method.equals("query")) {
                 this.query(req, resp);
+            }
+            if (method.equals("view")) {
+                this.getBillById(req, resp, "/jsp/billview.jsp");
+            }
+            if (method.equals("modify")) {
+                this.getBillById(req, resp, "/jsp/billmodify.jsp");
+            }
+            if (method.equals("getproviderlist")) {
+                this.getproviderlist(req, resp);
             }
         }
     }
@@ -61,9 +72,9 @@ public class BillServlet extends HttpServlet {
 
         req.setAttribute("billList", billList);
         req.setAttribute("providerList", providerList);
-        req.setAttribute("queryProductName",queryProductName);
-        req.setAttribute("queryProviderId",ProviderId);
-        req.setAttribute("queryIsPayment",IsPayment);
+        req.setAttribute("queryProductName", queryProductName);
+        req.setAttribute("queryProviderId", ProviderId);
+        req.setAttribute("queryIsPayment", IsPayment);
         try {
             req.getRequestDispatcher("/jsp/billlist.jsp").forward(req, resp);
         } catch (ServletException e) {
@@ -72,5 +83,57 @@ public class BillServlet extends HttpServlet {
             e.printStackTrace();
         }
 
+    }
+
+    /**
+     * 根据id获取订单信息
+     *
+     * @param req
+     * @param resp
+     * @param url  跳转路径
+     */
+    private void getBillById(HttpServletRequest req, HttpServletResponse resp, String url) {
+        String id = req.getParameter("billid");
+        int billid = 0;
+        try {
+            billid = Integer.parseInt(id);
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+        }
+
+        BillService billService = new BillServiceImpl();
+        Bill bill = billService.getBillById(billid);
+        req.setAttribute("bill", bill);
+
+        //ProviderService providerService = new ProviderServiceImpl();
+        //List<Provider> providerList = providerService.getProviderList(null, null);
+        //req.setAttribute("providerList", providerList);
+
+        try {
+            req.getRequestDispatcher(url).forward(req, resp);
+        } catch (ServletException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    private void getproviderlist(HttpServletRequest req, HttpServletResponse resp) {
+
+        ProviderService providerService = new ProviderServiceImpl();
+        List<Provider> providerList = providerService.getProviderList(null, null);
+        req.setAttribute("providerList", providerList);
+
+        resp.setContentType("application/json");
+
+        try {
+            PrintWriter outWriter = resp.getWriter();
+            outWriter.write(JSONArray.toJSONString(providerList));
+            outWriter.flush();
+            outWriter.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

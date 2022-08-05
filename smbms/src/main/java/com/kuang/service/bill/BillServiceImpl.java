@@ -97,4 +97,24 @@ public class BillServiceImpl implements BillService {
         }
         return flag;
     }
+
+    /**
+     * 根据id获取订单
+     *
+     * @param billId 订单id
+     * @return
+     */
+    public Bill getBillById(int billId) {
+        Connection connection = null;
+        Bill bill = new Bill();
+        try {
+            connection = BaseDao.getConnection();
+            bill = billDao.getBillById(connection, billId);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            BaseDao.closeResource(connection, null, null);
+        }
+        return bill;
+    }
 }
