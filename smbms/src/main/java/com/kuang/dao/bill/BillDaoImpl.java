@@ -208,4 +208,55 @@ public class BillDaoImpl implements BillDao {
         }
         return bill;
     }
+
+    /**
+     * 修改订单信息
+     *
+     * @param connection
+     * @param bill
+     * @return
+     * @throws SQLException
+     */
+    public int modifyBill(Connection connection, Bill bill) throws SQLException {
+        PreparedStatement pstm = null;
+        int updateRows = 0;
+
+        if (connection != null) {
+            String sql = "update smbms_bill set billCode=?,productName=?,productUnit=?,productCount=?,totalPrice=?,providerId=?,isPayment=?,modifyBy=?,modifyDate=? where id=?";
+            Object[] params = {bill.getBillCode(),
+                    bill.getProductName(),
+                    bill.getProductUnit(),
+                    bill.getProductCount(),
+                    bill.getTotalPrice(),
+                    bill.getProviderId(),
+                    bill.getIsPayment(),
+                    bill.getModifyBy(),
+                    bill.getModifyDate(),
+                    bill.getId()};
+
+            updateRows = BaseDao.executeUpdate(connection, pstm, sql, params);
+            BaseDao.closeResource(null, pstm, null);
+        }
+        return updateRows;
+    }
+
+    /**
+     * 删除订单
+     *
+     * @param connection
+     * @param billId     订单Id
+     * @return
+     * @throws SQLException
+     */
+    public int delBill(Connection connection, int billId) throws SQLException {
+        PreparedStatement pstm = null;
+        int updateRows = 0;
+        if (connection != null) {
+            String sql = "delete from smbms_bill where id=?";
+            Object[] params = {billId};
+            updateRows = BaseDao.executeUpdate(connection, pstm, sql, params);
+            BaseDao.closeResource(null, pstm, null);
+        }
+        return updateRows;
+    }
 }

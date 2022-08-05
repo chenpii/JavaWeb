@@ -42,6 +42,12 @@ public class BillServlet extends HttpServlet {
             if (method.equals("add")) {
                 this.addBill(req, resp);
             }
+            if (method.equals("modifysave")) {
+                this.modifySave(req, resp);
+            }
+            if (method.equals("delbill")) {
+                this.delBill(req, resp);
+            }
         }
     }
 
@@ -190,5 +196,55 @@ public class BillServlet extends HttpServlet {
             req.setAttribute("isPayment", isPayment);
             req.getRequestDispatcher("/jsp/billmodify.jsp");
         }
+    }
+
+    /**
+     * 修改订单信息
+     *
+     * @param req
+     * @param resp
+     */
+    private void modifySave(HttpServletRequest req, HttpServletResponse resp) {
+
+        User modifier = (User) req.getSession().getAttribute(Constants.USER_SESSION);
+        Bill bill = new Bill();
+        bill.setId(Integer.valueOf(req.getParameter("id")));
+        bill.setBillCode(req.getParameter("billCode"));
+        bill.setProductName(req.getParameter("productName"));
+        bill.setProductUnit(req.getParameter("productUnit"));
+        bill.setProductCount(new BigDecimal(req.getParameter("productCount")));
+        bill.setTotalPrice(new BigDecimal(req.getParameter("totalPrice")));
+        bill.setProviderId(Integer.parseInt(req.getParameter("providerId")));
+        bill.setIsPayment(Integer.valueOf(req.getParameter("isPayment")));
+        bill.setModifyBy(modifier.getId());
+        bill.setModifyDate(new Date());
+
+        BillService billService = new BillServiceImpl();
+
+        if (billService.modifyBill(bill)) {
+            try {
+                resp.sendRedirect(req.getContextPath() + "/jsp/bill.do?method=query");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } else {
+            try {
+                req.getRequestDispatcher("/jsp/billmodify.jsp").forward(req, resp);
+            } catch (ServletException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    /**
+     * 删除订单
+     *
+     * @param req
+     * @param resp
+     */
+    private void delBill(HttpServletRequest req, HttpServletResponse resp) {
+        
     }
 }

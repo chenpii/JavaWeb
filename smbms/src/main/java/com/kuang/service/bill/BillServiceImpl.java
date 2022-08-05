@@ -117,4 +117,75 @@ public class BillServiceImpl implements BillService {
         }
         return bill;
     }
+
+    /**
+     * 修改订单信息
+     *
+     * @param bill 订单
+     * @return
+     */
+    public boolean modifyBill(Bill bill) {
+        Connection connection = null;
+        boolean flag = false;
+
+        try {
+            connection = BaseDao.getConnection();
+            connection.setAutoCommit(false);
+            int updateRows = billDao.modifyBill(connection, bill);
+            connection.commit();
+            if (updateRows > 0) {
+                System.out.println("BillServiceImpl->modifyBill:successed!");
+                flag = true;
+            } else {
+                System.out.println("BillServiceImpl->modifyBill:failed");
+            }
+        } catch (SQLException e) {
+            try {
+                System.out.println("BillServiceImpl->modifyBill:rollback");
+                connection.rollback();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+            e.printStackTrace();
+        } finally {
+            BaseDao.closeResource(connection, null, null);
+        }
+        return flag;
+    }
+
+    /**
+     * 删除订单
+     *
+     * @param billId 订单id
+     * @return
+     */
+    public boolean delBill(int billId) {
+        Connection connection = null;
+        boolean flag = false;
+
+        try {
+            connection = BaseDao.getConnection();
+            connection.setAutoCommit(false);
+            int updateRows = billDao.delBill(connection, billId);
+            connection.commit();
+
+            if (updateRows > 0) {
+                System.out.println("BillServiceImpl->delBill:successed!");
+                flag = true;
+            } else {
+                System.out.println("BillServiceImpl->delBill:failed!");
+            }
+        } catch (SQLException e) {
+            try {
+                System.out.println("BillServiceImpl->delBill:rollback!");
+                connection.rollback();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+            e.printStackTrace();
+        } finally {
+            BaseDao.closeResource(connection, null, null);
+        }
+        return flag;
+    }
 }

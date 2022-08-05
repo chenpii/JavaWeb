@@ -18,4 +18,11 @@ public interface BillService {
 
     //根据billid获取订单
     public Bill getBillById(int billId);
+
+    //修改订单信息
+    public boolean modifyBill(Bill bill);
+
+    //删除订单
+    public boolean delBill(int billId);
+
 }
