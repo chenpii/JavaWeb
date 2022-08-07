@@ -182,7 +182,7 @@ public class BillDaoImpl implements BillDao {
     public Bill getBillById(Connection connection, int billId) throws SQLException {
         PreparedStatement pstm = null;
         ResultSet rs = null;
-        Bill bill = new Bill();
+        Bill bill = null;
         if (connection != null) {
             String sql = "select sb.*,sp.proName as proName from smbms_bill sb left join smbms_provider sp on sb.providerId=sp.id where sb.id=?";
             Object[] params = {billId};

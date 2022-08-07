@@ -1,5 +1,6 @@
 package com.kuang.servlet.provider;
 
+import com.alibaba.fastjson.JSONArray;
 import com.kuang.pojo.Provider;
 import com.kuang.pojo.User;
 import com.kuang.service.bill.BillService;
@@ -8,14 +9,17 @@ import com.kuang.service.provider.ProviderService;
 import com.kuang.service.provider.ProviderServiceImpl;
 import com.kuang.util.Constants;
 import com.mysql.cj.util.StringUtils;
+import com.mysql.cj.xdevapi.JsonArray;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.lang.ref.ReferenceQueue;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 public class ProviderServlet extends HttpServlet {
@@ -213,19 +217,40 @@ public class ProviderServlet extends HttpServlet {
             e.printStackTrace();
         }
 
-        BillService billService = new BillServiceImpl();
-        int billCount = billService.getBillCountByProviderId(proid);
-
+        //返回结果
+        HashMap<String, String> resultMap = new HashMap<String, String>();
         ProviderService providerService = new ProviderServiceImpl();
-        if (providerService.delProvider(proid)) {
-            //成功，重定向到查询页面
-            try {
-                resp.sendRedirect(req.getContextPath() + "/jsp/provider.do?method=query");
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+        Provider provider = providerService.getProviderById(proid);
+        BillService billService = new BillServiceImpl();
+        int billCountByProviderId = billService.getBillCountByProviderId(proid);
+
+        if (provider == null) {//供应商不存在
+
+            resultMap.put("delResult", "notexist");
+
+        } else if (billCountByProviderId > 0) { //供应商下存在订单
+
+            resultMap.put("delResult", String.valueOf(billCountByProviderId));
+
+        } else if (providerService.delProvider(proid)) { //成功
+
+            resultMap.put("delResult", "true");
+
         } else {
 
+            resultMap.put("delResult", "false");
         }
+
+        resp.setContentType("application/json");
+        PrintWriter outWriter = null;
+        try {
+            outWriter = resp.getWriter();
+            outWriter.write(JSONArray.toJSONString(resultMap));
+            outWriter.flush();
+            outWriter.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
     }
 }

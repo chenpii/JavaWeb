@@ -136,5 +136,23 @@ public class Bill {
         this.modifyDate = modifyDate;
     }
 
-
+    @Override
+    public String toString() {
+        return "Bill{" +
+                "id=" + id +
+                ", billCode='" + billCode + '\'' +
+                ", productName='" + productName + '\'' +
+                ", productDesc='" + productDesc + '\'' +
+                ", productUnit='" + productUnit + '\'' +
+                ", productCount=" + productCount +
+                ", totalPrice=" + totalPrice +
+                ", isPayment=" + isPayment +
+                ", createdBy=" + createdBy +
+                ", creationDate=" + creationDate +
+                ", modifyBy=" + modifyBy +
+                ", modifyDate=" + modifyDate +
+                ", providerId=" + providerId +
+                ", providerName='" + providerName + '\'' +
+                '}';
+    }
 }

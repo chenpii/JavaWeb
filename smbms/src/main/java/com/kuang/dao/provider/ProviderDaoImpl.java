@@ -201,12 +201,13 @@ public class ProviderDaoImpl implements ProviderDao {
     public Provider getProviderById(Connection connection, int providerId) throws SQLException {
         PreparedStatement pstm = null;
         ResultSet rs = null;
-        Provider provider = new Provider();
+        Provider provider = null;
         if (connection != null) {
             String sql = "select * from smbms_provider where id =?";
             Object[] params = {providerId};
             rs = BaseDao.executeQuery(connection, pstm, sql, params);
             while (rs.next()) {
+                provider = new Provider();
                 provider.setId(rs.getInt("id"));
                 provider.setProCode(rs.getString("proCode"));
                 provider.setProName(rs.getString("proName"));

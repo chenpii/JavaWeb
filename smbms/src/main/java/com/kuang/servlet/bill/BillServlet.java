@@ -253,15 +253,20 @@ public class BillServlet extends HttpServlet {
             billId = Integer.parseInt(billid);
         }
 
+        //返回结果
+        HashMap<String, String> resultMap = new HashMap<String, String>();
         BillService billService = new BillServiceImpl();
         Bill getBill = billService.getBillById(billId);
-        HashMap<String, String> resultMap = new HashMap<String, String>();
-        if (getBill == null) {
+
+        if (getBill == null) {//订单不存在
+
             resultMap.put("delResult", "notexist");
-        }
-        if (billService.delBill(billId)) {
+
+        } else if (billService.delBill(billId)) {//订单删除成功
+
             resultMap.put("delResult", "true");
         } else {
+
             resultMap.put("delResult", "false");
         }
 
