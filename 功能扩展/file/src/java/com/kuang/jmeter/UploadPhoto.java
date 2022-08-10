@@ -1,7 +1,6 @@
 package com.kuang.jmeter;
 
 import org.junit.Test;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -28,5 +27,7 @@ public class UploadPhoto {
         Base64.Encoder encoder = Base64.getEncoder();
         String photo = encoder.encodeToString(data);
         System.out.println(photo);
+
+
     }
 }
