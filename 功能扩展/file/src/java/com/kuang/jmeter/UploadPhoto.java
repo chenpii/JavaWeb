@@ -27,7 +27,5 @@ public class UploadPhoto {
         Base64.Encoder encoder = Base64.getEncoder();
         String photo = encoder.encodeToString(data);
         System.out.println(photo);
-
-
     }
 }

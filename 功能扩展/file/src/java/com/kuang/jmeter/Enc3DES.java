@@ -9,8 +9,6 @@ import javax.crypto.spec.IvParameterSpec;
 import java.security.Key;
 import java.security.spec.AlgorithmParameterSpec;
 import java.util.Base64;
-import java.util.HashMap;
-import java.net.URLDecoder;
 import java.net.URLEncoder;
 
 public class Enc3DES {
