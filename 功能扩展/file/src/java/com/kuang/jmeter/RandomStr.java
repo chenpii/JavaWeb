@@ -39,12 +39,15 @@ public class RandomStr {
         areaCode.put("临安市", 330185);
         String randomAreaCode = "";
         int index = (int) (Math.random() * areaCode.size());
+        while (index==0){
+            index = (int) (Math.random() * areaCode.size());
+        }
         Collection values = areaCode.values();
         Iterator it = values.iterator();
-        int i = 0;
+        int j = 0;
         int code = 0;
-        while (i < index && it.hasNext()) {
-            i++;
+        while (j < index && it.hasNext()) {
+            j++;
             randomAreaCode = it.next().toString();
         }
         generater.append(randomAreaCode);
@@ -72,7 +75,7 @@ public class RandomStr {
 
         //随机码
         String randomCode = "";
-        int code = (int) (Math.random() * 1000);
+        code = (int) (Math.random() * 1000);
         if (code < 10) {
             //  randomCode= "00" + code;
             if (code % 2 == sex) {
@@ -114,14 +117,20 @@ public class RandomStr {
         }
         char validateCode = r[result % 11];
         generater.append(validateCode);
-        vars.put("ldcard", generater.toString());
-        SampleResult.setResponseData(generater.toString());
+
+        //vars.put("IdCard_Random", generater.toString());
+        //SampleResult.setResponseData(generater.toString());
+        return generater.toString();
     }
 
     @Test
     public void test() {
 
-        System.out.println(getRandomStr(6));
-        System.out.println(getRandomStr(7));
+        //System.out.println(getRandomStr(6));
+        //System.out.println(getRandomStr(7));
+ int sex= Integer.parseInt("1");
+        for (int i = 0; i < 100; i++) {
+            System.out.println(getRandomIdCard());
+        }
     }
 }
