@@ -39,7 +39,7 @@ public class RandomStr {
         areaCode.put("临安市", 330185);
         String randomAreaCode = "";
         int index = (int) (Math.random() * areaCode.size());
-        while (index==0){
+        while (index == 0) {
             index = (int) (Math.random() * areaCode.size());
         }
         Collection values = areaCode.values();
@@ -128,7 +128,7 @@ public class RandomStr {
 
         //System.out.println(getRandomStr(6));
         //System.out.println(getRandomStr(7));
- int sex= Integer.parseInt("1");
+        int sex = Integer.parseInt("1");
         for (int i = 0; i < 100; i++) {
             System.out.println(getRandomIdCard());
         }
