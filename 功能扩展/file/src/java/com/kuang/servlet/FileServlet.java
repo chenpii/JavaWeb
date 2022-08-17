@@ -1,6 +1,8 @@
 package com.kuang.servlet;
 
 
+import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.ProgressListener;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
@@ -11,6 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
 public class FileServlet extends HttpServlet {
     @Override
@@ -21,35 +24,48 @@ public class FileServlet extends HttpServlet {
         if (!ServletFileUpload.isMultipartContent(request)) {
             return;//说明是个普通表单，直接返回
         }
+        try {
+            //创建上传文件的保存路径，建议在WEB-INF路径下，安全，用户无法直接访问上传的文件；
+            String uploadPath = this.getServletContext().getRealPath("/WEB-INF/upload");
+            File uploadFile = new File(uploadPath);
+            if (!uploadFile.exists()) {
+                uploadFile.mkdir();//创建目录
+            }
 
-        //创建上传文件的保存路径，建议在WEB-INF路径下，安全，用户无法直接访问上传的文件；
-        String uploadPath = this.getServletContext().getRealPath("/WEB-INF/upload");
-        File uploadFile = new File(uploadPath);
-        if (!uploadFile.exists()) {
-            uploadFile.mkdir();//创建目录
-        }
-
-        //缓存，临时路径，加入文件超过了预期的大小，我们就把他放到一个临时文件中，过几天自动删除，或者提醒用户转存为永久
-        String tmpPath = this.getServletContext().getRealPath("/WEB-INF/tmp");
-        File tmpPFile = new File(tmpPath);
-        if (!tmpPFile.exists()) {
-            tmpPFile.mkdir();//创建目录
-        }
-        //处理上传的文件，一般都需要通过流来获取，我们可以使用request.getInputStream()，原生态的文件上传流被获取，十分麻烦
-        //但是我们都建议使用Apache的文件上传组件来实现，common-fileupload，它需要依赖common-io组件
+            //缓存，临时路径，加入文件超过了预期的大小，我们就把他放到一个临时文件中，过几天自动删除，或者提醒用户转存为永久
+            String tmpPath = this.getServletContext().getRealPath("/WEB-INF/tmp");
+            File tmpPFile = new File(tmpPath);
+            if (!tmpPFile.exists()) {
+                tmpPFile.mkdir();//创建目录
+            }
+            //处理上传的文件，一般都需要通过流来获取，我们可以使用request.getInputStream()，原生态的文件上传流被获取，十分麻烦
+            //但是我们都建议使用Apache的文件上传组件来实现，common-fileupload，它需要依赖common-io组件
 
         /*
         ServletFileUpload负责处理上传的文件数据，并将表单中每个输入项封装成一个FileItem对象，
         在使用ServletFileUpload对象解析请求时需要DiskFileItemFactory对象。
         所以，我们需要在进行解析工作前构造DiskFileItemFactory对象，
-        通过ServletFileUpload对象的构造方法或setFileItemFactory()方法设置ServletFileUpload对象的fileItemFactory属性。
+        通过ServletFileUpload对象的构造方法或setFileItemFactory()方法
+        设置ServletFileUpload对象的fileItemFactory属性。
          */
 
-        //1.创建DiskFileItemFactory（磁盘文件工厂）对象，处理文件上传的路径或者大小限制。
-        DiskFileItemFactory factory = getDiskFileItemFactory(tmpPFile);
+            //1.创建DiskFileItemFactory（磁盘文件工厂）对象，处理文件上传的路径或者大小限制。
+            DiskFileItemFactory factory = getDiskFileItemFactory(tmpPFile);
 
-        //2.创建ServletFileUpload对象
-        ServletFileUpload upload = getServletFileUpload(factory);
+            //2.创建ServletFileUpload对象
+            ServletFileUpload upload = getServletFileUpload(factory);
+
+            //3.处理上传的文件
+            //把前端请求解析，封装成一个FileItem对象，需要从ServletFileUpload对象中获取
+            List<FileItem> fileItems = upload.parseRequest(request);
+            for (FileItem fileItem : fileItems) {
+
+            }
+
+        } catch (FileUploadException e) {
+            e.printStackTrace();
+        }
+
     }
 
     @Override
