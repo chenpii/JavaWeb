@@ -1,6 +1,7 @@
 package com.kuang.servlet;
 
 
+import javafx.scene.transform.Scale;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.ProgressListener;
@@ -12,6 +13,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
+import java.math.BigDecimal;
+import java.text.DecimalFormat;
 import java.util.List;
 import java.util.UUID;
 
@@ -103,7 +106,9 @@ public class FileServlet extends HttpServlet {
              */
             @Override
             public void update(long pBytesRead, long pContentLength, int pItems) {
-                System.out.println("总大小：" + pContentLength + ",已上传：" + pBytesRead);
+                DecimalFormat df = new DecimalFormat("0.00");
+                double perValue = pBytesRead / pContentLength;
+                System.out.println("总大小：" + pContentLength + ",已上传：" + pBytesRead + ",进度为" + df.format(perValue * 100) + "%");
             }
         });
 
