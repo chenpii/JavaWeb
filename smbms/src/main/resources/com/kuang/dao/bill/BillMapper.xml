@@ -8,15 +8,81 @@
             flushInterval="60000"
             size="512"
             readOnly="true"/>
-    <select id="getBillList" parameterType="map" resultMap="bill_provider" resultType="bill">
-        select sb.*, sp.proName as proName
+
+    <select id="getBillList" parameterType="map" resultType="bill">
+        select sb.*, sp.proName as providerName
         from smbms_bill sb
-                 left join smbms_provider sp on sb.providerId = sp.id
+        left join smbms_provider sp on sb.providerId = sp.id
+        <where>
+            <if test="productName !=null">
+                and productName like concat( '%' , #{productName}, '%')
+            </if>
+            <if test="providerId !=null and providerId !=0">
+                and sb.providerId = #{providerId}
+            </if>
+            <if test="isPayment !=null and isPayment !=0 ">
+                and sb.isPayment = #{isPayment}
+            </if>
+        </where>
     </select>
 
-    <select id="getBillById" parameterType="int">
-        select *
+    <select id="getBillCountByProviderId" parameterType="int" resultType="int">
+        select count(1) as count
+        from smbms_bill
+        where providerId=#{providerId}
+    </select>
+
+    <insert id="addBill" parameterType="map">
+        insert into smbms_bill (billCode, productName, productDesc, productUnit, productCount, totalPrice, isPayment,
+                                createdBy, creationDate, providerId)
+        values (#{billCode}, #{productName}, #{productDesc}, #{productUnit}, #{productCount}, #{totalPrice},
+                #{isPayment}, #{createdBy}, #{creationDate}, #{providerId})
+    </insert>
+
+    <select id="getBillById" parameterType="int" resultType="bill">
+        select sb.*, sp.proName as providerName
+        from smbms_bill sb
+                 left join smbms_provider sp on sb.providerId = sp.id
+        where sb.id = #{id}
+    </select>
+
+    <update id="modifyBill" parameterType="bill">
+        update smbms_bill
+        <set>
+            <if test="billCode!=null">
+                billCode=#{billCode},
+            </if>
+            <if test="productName!=null">
+                productName=#{productName},
+            </if>
+            <if test="productUnit!=null">
+                productUnit=#{productUnit},
+            </if>
+            <if test="productCount!=null">
+                productCount=#{productCount},
+            </if>
+            <if test="totalPrice!=null">
+                totalPrice=#{totalPrice},
+            </if>
+            <if test="providerId!=null">
+                providerId=#{providerId},
+            </if>
+            <if test="isPayment!=null">
+                isPayment=#{isPayment},
+            </if>
+            <if test="modifyBy!=null">
+                modifyBy=#{modifyBy},
+            </if>
+            <if test="modifyDate!=null">
+                modifyDate=#{modifyDate},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <delete id="delBill" parameterType="int">
+        delete
         from smbms_bill
         where id = #{id}
-    </select>
+    </delete>
 </mapper>

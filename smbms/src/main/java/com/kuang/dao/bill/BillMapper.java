@@ -4,14 +4,15 @@ import com.kuang.pojo.Bill;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+import java.util.Map;
 
 public interface BillMapper {
 
     //查询订单列表
-    List<Bill> getBillList(@Param("providerId") int providerId, @Param("isPayment") int isPayment);
+    List<Bill> getBillList(@Param("productName") String productName,@Param("providerId") int providerId, @Param("isPayment") int isPayment);
 
     //根据供应商id查询订单总数
-    int getBillCountByProviderId(int providerId);
+    int getBillCountByProviderId(@Param("providerId") int providerId);
 
     //新增订单
     int addBill(Bill bill);
@@ -23,5 +24,5 @@ public interface BillMapper {
     int modifyBill(Bill bill);
 
     //删除订单
-    int delBill(int billId);
+    int delBill(@Param("id") int billId);
 }

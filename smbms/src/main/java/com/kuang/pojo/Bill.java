@@ -1,5 +1,6 @@
 package com.kuang.pojo;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
@@ -7,7 +8,7 @@ import java.util.Date;
  * @author chenpi
  * @create 2022-07-23 21:46
  */
-public class Bill {
+public class Bill implements Serializable {
     private Integer id; //id
     private String billCode; //订单编码
     private String productName; //商品名称
