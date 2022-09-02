@@ -13,4 +13,10 @@
         from smbms_bill sb
                  left join smbms_provider sp on sb.providerId = sp.id
     </select>
+
+    <select id="getBillById" parameterType="int">
+        select *
+        from smbms_bill
+        where id = #{id}
+    </select>
 </mapper>
