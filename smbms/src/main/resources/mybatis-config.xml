@@ -30,4 +30,7 @@
         </environment>
     </environments>
 
+    <mappers>
+        <mapper resource="com/kuang/dao/bill/BillMapper.xml"/>
+    </mappers>
 </configuration>

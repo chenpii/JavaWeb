@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kuang.dao.bill.BillMapper">
+    <cache
+            eviction="FIFO"
+            flushInterval="60000"
+            size="512"
+            readOnly="true"/>
+    <select id="getBillList" parameterType="map" resultMap="bill_provider" resultType="bill">
+        select sb.*, sp.proName as proName
+        from smbms_bill sb
+                 left join smbms_provider sp on sb.providerId = sp.id
+    </select>
+</mapper>
