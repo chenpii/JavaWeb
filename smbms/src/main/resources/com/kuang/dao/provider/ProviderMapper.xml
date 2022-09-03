@@ -31,10 +31,10 @@
             <if test="proName != null">
                 and proName like concat( '%' , #{proName}, '%')
             </if>
-            <!--            <if test="currentPageNo !=null and pageSize != null">-->
-            <!--                order by creationDate limit #{currentPageNo},#{pageSize}-->
-            <!--            </if>-->
         </where>
+<!--        <if test="currentPageNo > 0 and pageSize > 0">-->
+<!--            order by creationDate limit #{currentPageNo},#{pageSize}-->
+<!--        </if>-->
     </select>
 
     <select id="getProviderById" resultType="provider">

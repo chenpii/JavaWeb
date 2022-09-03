@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kuang.dao.user.UserMapper">
+    <cache
+            eviction="FIFO"
+            flushInterval="60000"
+            size="512"
+            readOnly="true"/>
+
+    <insert id="addUser" parameterType="user">
+        insert into smbms_user (userCode, userName, userPassword, gender, birthday, phone, address, userRole, createdBy,
+                                creationDate)
+        values (#{userCode}, #{userName}, #{userPassword}, #{gender}, #{birthday}, #{phone}, #{address}, #{userRole},
+                #{createdBy}, #{creationDate})
+    </insert>
+
+    <delete id="delUser" parameterType="int">
+        delete
+        from smbms_user
+        where id = #{id};
+    </delete>
+
+    <select id="getLoginUser" resultType="user">
+        select *
+        from smbms_user
+        where userCode = #{userCode}
+    </select>
+
+    <update id="updatePwd">
+        update smbms_user
+        set userPassword=#{password}
+        where id = #{id}
+    </update>
+
+    <select id="getUserCount" resultType="int">
+        select count(1) as count
+        from smbms_user su left join smbms_role sr
+        on su.userRole = sr.id
+        <where>
+            <if test="userName != null">
+                and su.userName like concat('%',#{userName},'%')
+            </if>
+            <if test="userRole >0 ">
+                and su.userRole = #{userRole}
+            </if>
+        </where>
+    </select>
+
+    <select id="getUserList" resultType="user">
+        select *,sr.roleName as userRoleName
+        from smbms_user su
+        left join smbms_role sr on su.userRole = sr.id
+        <where>
+            <if test='userName !=null and userName !="" '>
+                and su.userName like concat('%',#{userName},'%')
+            </if>
+            <if test="userRole !=null  and userRole > 0">
+                and su.userRole = #{userRole}
+            </if>
+        </where>
+        order by su.creationDate limit #{currIndex},#{pageSize}
+    </select>
+
+    <select id="getUserByUserCode" resultType="user">
+        select *
+        from smbms_user
+        where userCode = #{userCode}
+    </select>
+
+    <select id="getUserById" parameterType="int" resultType="user">
+        select su.*, sr.roleName as userRoleName
+        from smbms_user su
+                 left outer join smbms_role sr on su.userRole = sr.id
+        where su.id = #{id}
+    </select>
+
+    <update id="modifyUser">
+        update smbms_user
+        <set>
+            <if test="userName != null">
+                userName=#{userName},
+            </if>
+            <if test="gender != null">
+                gender=#{gender},
+            </if>
+            <if test="birthday != null">
+                birthday=#{birthday},
+            </if>
+            <if test="phone != null">
+                phone=#{phone},
+            </if>
+            <if test="address != null">
+                address=#{address},
+            </if>
+            <if test="userRole != null">
+                userRole=#{userRole},
+            </if>
+            <if test="modifyBy != null">
+                modifyBy=#{modifyBy},
+            </if>
+            <if test="modifyDate != null">
+                modifyDate=#{modifyDate},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+</mapper>

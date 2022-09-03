@@ -173,9 +173,9 @@ public class UserServlet extends HttpServlet {
         int pageSize = Constants.USER_LIST_PAGESIZE;
         int currentPageNo = 1;
 
-        if (queryUserName == null) {
-            queryUserName = "";
-        }
+//        if (queryUserName == null) {
+//            queryUserName = "";
+//        }
         if (!StringUtils.isNullOrEmpty(temp)) {
             queryUserRole = Integer.parseInt(temp); //给查询赋值 0,1,2,3
         }

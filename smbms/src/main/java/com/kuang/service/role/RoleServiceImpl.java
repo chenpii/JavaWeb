@@ -1,9 +1,13 @@
 package com.kuang.service.role;
 
 import com.kuang.dao.BaseDao;
+import com.kuang.dao.provider.ProviderMapper;
 import com.kuang.dao.role.RoleDao;
 import com.kuang.dao.role.RoleDaoImpl;
+import com.kuang.dao.role.RoleMapper;
 import com.kuang.pojo.Role;
+import com.kuang.util.MybatisUtils;
+import org.apache.ibatis.session.SqlSession;
 import org.junit.Test;
 
 import java.sql.Connection;
@@ -30,17 +34,21 @@ public class RoleServiceImpl implements RoleService {
      * @return
      */
     public List<Role> getRoleList() {
-        Connection connection = null;
-        List<Role> roleList = new ArrayList<Role>();
-        try {
-            connection = BaseDao.getConnection();
-            roleList = roleDao.getRoleList(connection);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            BaseDao.closeResource(connection, null, null);
-        }
 
+        SqlSession sqlSession = MybatisUtils.getSqlSession();
+        RoleMapper roleMapper = sqlSession.getMapper(RoleMapper.class);
+//        Connection connection = null;
+        List<Role> roleList = new ArrayList<Role>();
+//        try {
+//            connection = BaseDao.getConnection();
+//            roleList = roleDao.getRoleList(connection);
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//        } finally {
+//            BaseDao.closeResource(connection, null, null);
+//        }
+        roleList = roleMapper.getRoleList();
+        sqlSession.close();
         return roleList;
     }
 

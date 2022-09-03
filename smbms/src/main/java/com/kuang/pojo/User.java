@@ -1,12 +1,13 @@
 package com.kuang.pojo;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
  * @author chenpi
  * @create 2022-07-23 21:41
  */
-public class User {
+public class User implements Serializable  {
     private Integer id; //id
     private String userCode; //用户编码
     private String userName; //用户名称

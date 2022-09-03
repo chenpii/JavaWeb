@@ -1,12 +1,13 @@
 package com.kuang.pojo;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
  * @author chenpi
  * @create 2022-07-23 21:56
  */
-public class Role {
+public class Role implements Serializable {
     private Integer id; //id
     private String roleCode; //角色编码
     private String roleName; //角色名称
