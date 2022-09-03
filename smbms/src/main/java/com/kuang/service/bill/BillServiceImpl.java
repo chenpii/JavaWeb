@@ -6,6 +6,7 @@ import com.kuang.dao.bill.BillDaoImpl;
 import com.kuang.dao.bill.BillMapper;
 import com.kuang.pojo.Bill;
 import com.kuang.util.MybatisUtils;
+import org.apache.ibatis.session.SqlSession;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -14,11 +15,11 @@ import java.util.List;
 
 public class BillServiceImpl implements BillService {
     private BillDao billDao;
-    private BillMapper billMapper;
+//    private BillMapper billMapper;
 
     public BillServiceImpl() {
         this.billDao = new BillDaoImpl();
-        this.billMapper = MybatisUtils.getSqlSession().getMapper(BillMapper.class);
+//        this.billMapper = MybatisUtils.getSqlSession().getMapper(BillMapper.class);
     }
 
     /**
@@ -31,8 +32,10 @@ public class BillServiceImpl implements BillService {
      */
     public List<Bill> getBillList(String productName, int providerId, int isPayment) {
         System.out.println("BillServiceImpl->getBillList");
+        SqlSession sqlSession = MybatisUtils.getSqlSession();
+        BillMapper billMapper = sqlSession.getMapper(BillMapper.class);
 //        Connection connection = null;
-//        List<Bill> billList = new ArrayList<Bill>();
+        List<Bill> billList = null;
 //
 //        try {
 //            connection = BaseDao.getConnection();
@@ -43,8 +46,9 @@ public class BillServiceImpl implements BillService {
 //            BaseDao.closeResource(connection, null, null);
 //        }
 //        return billList;
-
-        return billMapper.getBillList( productName, providerId, isPayment);
+        billList = billMapper.getBillList(productName, providerId, isPayment);
+        sqlSession.close();
+        return billList;
     }
 
     /**
@@ -54,8 +58,10 @@ public class BillServiceImpl implements BillService {
      * @return
      */
     public int getBillCountByProviderId(int providerId) {
+        SqlSession sqlSession = MybatisUtils.getSqlSession();
+        BillMapper billMapper = sqlSession.getMapper(BillMapper.class);
 //        Connection connection = null;
-//        int count = 0;
+        int count = 0;
 //        try {
 //            connection = BaseDao.getConnection();
 //            count = billDao.getBillCountByProviderId(connection, providerId);
@@ -64,8 +70,10 @@ public class BillServiceImpl implements BillService {
 //        } finally {
 //            BaseDao.closeResource(connection, null, null);
 //        }
-//        return count;
-        return billMapper.getBillCountByProviderId(providerId);
+        count = billMapper.getBillCountByProviderId(providerId);
+        sqlSession.close();
+        return count;
+
     }
 
     /**
@@ -75,6 +83,9 @@ public class BillServiceImpl implements BillService {
      * @return
      */
     public boolean addBill(Bill bill) {
+        SqlSession sqlSession = MybatisUtils.getSqlSession();
+        BillMapper billMapper = sqlSession.getMapper(BillMapper.class);
+
 //        Connection connection = null;
         boolean flag = false;
 
@@ -106,7 +117,7 @@ public class BillServiceImpl implements BillService {
         if (billMapper.addBill(bill) > 0) {
             flag = true;
         }
-
+        sqlSession.close();
         return flag;
     }
 
@@ -117,8 +128,11 @@ public class BillServiceImpl implements BillService {
      * @return
      */
     public Bill getBillById(int billId) {
+        SqlSession sqlSession = MybatisUtils.getSqlSession();
+        BillMapper billMapper = sqlSession.getMapper(BillMapper.class);
+
 //        Connection connection = null;
-//        Bill bill = null;
+        Bill bill = null;
 //        try {
 //            connection = BaseDao.getConnection();
 //            bill = billDao.getBillById(connection, billId);
@@ -128,7 +142,9 @@ public class BillServiceImpl implements BillService {
 //            BaseDao.closeResource(connection, null, null);
 //        }
 //        return bill;
-        return billMapper.getBillById(billId);
+        bill = billMapper.getBillById(billId);
+        sqlSession.close();
+        return bill;
     }
 
     /**
@@ -138,6 +154,8 @@ public class BillServiceImpl implements BillService {
      * @return
      */
     public boolean modifyBill(Bill bill) {
+        SqlSession sqlSession = MybatisUtils.getSqlSession();
+        BillMapper billMapper = sqlSession.getMapper(BillMapper.class);
 //        Connection connection = null;
         boolean flag = false;
 
@@ -167,7 +185,7 @@ public class BillServiceImpl implements BillService {
         if (billMapper.modifyBill(bill) > 0) {
             flag = true;
         }
-
+        sqlSession.close();
         return flag;
     }
 
@@ -178,6 +196,8 @@ public class BillServiceImpl implements BillService {
      * @return
      */
     public boolean delBill(int billId) {
+        SqlSession sqlSession = MybatisUtils.getSqlSession();
+        BillMapper billMapper = sqlSession.getMapper(BillMapper.class);
 //        Connection connection = null;
         boolean flag = false;
 
@@ -207,7 +227,7 @@ public class BillServiceImpl implements BillService {
         if (billMapper.delBill(billId) > 0) {
             flag = true;
         }
-
+        sqlSession.close();
         return flag;
     }
 }

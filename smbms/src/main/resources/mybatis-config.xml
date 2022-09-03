@@ -33,5 +33,6 @@
     <mappers>
         <mapper resource="com/kuang/dao/bill/BillMapper.xml"/>
         <mapper resource="com/kuang/dao/provider/ProviderMapper.xml"/>
+        <mapper resource="com/kuang/dao/role/RoleMapper.xml"/>
     </mappers>
 </configuration>

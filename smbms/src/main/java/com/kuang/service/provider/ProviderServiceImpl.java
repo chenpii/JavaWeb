@@ -1,11 +1,13 @@
 package com.kuang.service.provider;
 
 import com.kuang.dao.BaseDao;
+import com.kuang.dao.bill.BillMapper;
 import com.kuang.dao.provider.ProviderDao;
 import com.kuang.dao.provider.ProviderDaoImpl;
 import com.kuang.dao.provider.ProviderMapper;
 import com.kuang.pojo.Provider;
 import com.kuang.util.MybatisUtils;
+import org.apache.ibatis.session.SqlSession;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -15,11 +17,11 @@ import java.util.List;
 public class ProviderServiceImpl implements ProviderService {
     //引入Dao
     private ProviderDao providerDao;
-    private ProviderMapper providerMapper;
+//    private ProviderMapper providerMapper;
 
     public ProviderServiceImpl() {
         this.providerDao = new ProviderDaoImpl();
-        this.providerMapper = MybatisUtils.getSqlSession().getMapper(ProviderMapper.class);
+//        this.providerMapper = MybatisUtils.getSqlSession().getMapper(ProviderMapper.class);
     }
 
     /**
@@ -30,8 +32,11 @@ public class ProviderServiceImpl implements ProviderService {
      * @return
      */
     public int getProviderCount(String proCode, String proName) {
+        SqlSession sqlSession = MybatisUtils.getSqlSession();
+        ProviderMapper providerMapper = sqlSession.getMapper(ProviderMapper.class);
+
 //        Connection connection = null;
-//        int providerCount = 0;
+        int providerCount = 0;
 //        try {
 //            connection = BaseDao.getConnection();
 //            providerCount = providerDao.getProviderCount(connection, proCode, proName);
@@ -40,8 +45,9 @@ public class ProviderServiceImpl implements ProviderService {
 //        } finally {
 //            BaseDao.closeResource(connection, null, null);
 //        }
-//        return providerCount;
-        return providerMapper.getProviderCount(proCode, proName);
+        providerCount = providerMapper.getProviderCount(proCode, proName);
+        sqlSession.close();
+        return providerCount;
     }
 
     /**
@@ -52,6 +58,8 @@ public class ProviderServiceImpl implements ProviderService {
      * @return
      */
     public List<Provider> getProviderList(String proCode, String proName) {
+        SqlSession sqlSession = MybatisUtils.getSqlSession();
+        ProviderMapper providerMapper = sqlSession.getMapper(ProviderMapper.class);
 //        Connection connection = null;
         List<Provider> providers = new ArrayList<Provider>();
 //        try {
@@ -64,7 +72,7 @@ public class ProviderServiceImpl implements ProviderService {
 //        }
 
         providers = providerMapper.getProviderList(proCode, proName);
-
+        sqlSession.close();
         return providers;
 
     }
@@ -79,6 +87,9 @@ public class ProviderServiceImpl implements ProviderService {
      * @return
      */
     public List<Provider> getProviderList(String proCode, String proName, int currentPageNo, int pageSize) {
+        SqlSession sqlSession = MybatisUtils.getSqlSession();
+        ProviderMapper providerMapper = sqlSession.getMapper(ProviderMapper.class);
+
 //        Connection connection = null;
         List<Provider> providers = new ArrayList<Provider>();
 //        try {
@@ -91,6 +102,7 @@ public class ProviderServiceImpl implements ProviderService {
 //        }
 
         providers = providerMapper.getProviderList(proCode, proName, currentPageNo, pageSize);
+        sqlSession.close();
         return providers;
     }
 
@@ -101,8 +113,11 @@ public class ProviderServiceImpl implements ProviderService {
      * @return
      */
     public Provider getProviderById(int providerId) {
+        SqlSession sqlSession = MybatisUtils.getSqlSession();
+        ProviderMapper providerMapper = sqlSession.getMapper(ProviderMapper.class);
+
 //        Connection connection = null;
-//        Provider provider = null;
+        Provider provider = null;
 //        try {
 //            connection = BaseDao.getConnection();
 //            provider = providerDao.getProviderById(connection, providerId);
@@ -111,9 +126,10 @@ public class ProviderServiceImpl implements ProviderService {
 //        } finally {
 //            BaseDao.closeResource(connection, null, null);
 //        }
-//        return provider;
+        provider = providerMapper.getProviderById(providerId);
+        sqlSession.close();
+        return provider;
 
-        return providerMapper.getProviderById(providerId);
     }
 
     /**
@@ -123,6 +139,9 @@ public class ProviderServiceImpl implements ProviderService {
      * @return
      */
     public boolean modifyProvider(Provider provider) {
+        SqlSession sqlSession = MybatisUtils.getSqlSession();
+        ProviderMapper providerMapper = sqlSession.getMapper(ProviderMapper.class);
+
 //        Connection connection = null;
         boolean flag = false;
 
@@ -153,6 +172,7 @@ public class ProviderServiceImpl implements ProviderService {
         if (providerMapper.modifyProvider(provider) > 0) {
             flag = true;
         }
+        sqlSession.close();
 
         return flag;
     }
@@ -164,6 +184,8 @@ public class ProviderServiceImpl implements ProviderService {
      * @return
      */
     public boolean addProvider(Provider provider) {
+        SqlSession sqlSession = MybatisUtils.getSqlSession();
+        ProviderMapper providerMapper = sqlSession.getMapper(ProviderMapper.class);
 //        Connection connection = null;
         boolean flag = false;
 
@@ -195,7 +217,7 @@ public class ProviderServiceImpl implements ProviderService {
         if (providerMapper.addProvider(provider) > 0) {
             flag = true;
         }
-
+        sqlSession.close();
         return flag;
     }
 
@@ -206,6 +228,8 @@ public class ProviderServiceImpl implements ProviderService {
      * @return
      */
     public boolean delProvider(int providerId) {
+        SqlSession sqlSession = MybatisUtils.getSqlSession();
+        ProviderMapper providerMapper = sqlSession.getMapper(ProviderMapper.class);
 //        Connection connection = null;
         boolean flag = false;
 
@@ -236,6 +260,7 @@ public class ProviderServiceImpl implements ProviderService {
         if (providerMapper.delProvider(providerId) > 0) {
             flag = true;
         }
+        sqlSession.close();
         return flag;
     }
 }
