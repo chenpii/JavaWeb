@@ -1,12 +1,13 @@
 package com.kuang.pojo;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
  * @author chenpi
  * @create 2022-07-23 21:51
  */
-public class Provider {
+public class Provider implements Serializable {
     private Integer id; //id
     private String proCode; //供应商编码
     private String proName; //供应商名称
